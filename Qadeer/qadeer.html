@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>QADEER AI Dashboard - Matrix</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --matrix-green: #39FF14;
+      --dark-bg: #050505;
+      --container-bg: rgba(10, 10, 10, 0.85);
+    }
+
+    body {
+      margin: 0;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-family: 'Fira Code', monospace;
+      background-color: var(--dark-bg);
+      color: var(--matrix-green);
+      overflow: hidden;
+      background-image:
+        linear-gradient(rgba(0,0,0,0.5) 50%, transparent 50%),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.04) 1px, transparent 1px),
+        linear-gradient(rgba(255, 255, 255, 0.04) 1px, transparent 1px);
+      background-size: 100% 4px, 50px 50px, 50px 50px;
+      animation: scanline 10s linear infinite;
+    }
+
+    @keyframes scanline {
+        from { background-position-y: 0; }
+        to { background-position-y: 100vh; }
+    }
+
+    .container {
+      background: var(--container-bg);
+      backdrop-filter: blur(2px);
+      padding: 35px 40px;
+      text-align: left;
+      width: 90%;
+      max-width: 600px;
+      border: 2px solid var(--matrix-green);
+      box-shadow: 0 0 25px rgba(57, 255, 20, 0.25), inset 0 0 15px rgba(57, 255, 20, 0.15);
+    }
+
+    h1 {
+      font-size: 2.5em;
+      font-weight: 600;
+      color: #fff;
+      margin-top: 0;
+      margin-bottom: 30px;
+      letter-spacing: 1px;
+    }
+
+    #status {
+      font-size: 1.2em;
+      font-weight: 400;
+      color: var(--matrix-green); /* Hamesha green (online) color */
+    }
+    
+    #status::before {
+        content: '> ';
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>QADEER AI Dashboard</h1>
+    <p id="status">STATUS: [ONLINE] - ALL SYSTEMS NOMINAL</p>
+  </div>
+</body>
+</html>
