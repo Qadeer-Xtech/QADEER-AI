@@ -1,22 +1,25 @@
-# Step 1: Base Image
-FROM node:18-slim
 
-# Step 2: Install necessary OS packages for Baileys
-RUN apt-get update && apt-get install -y --no-install-recommends \
-    ffmpeg \
-    imagemagick \
-    webp \
-    && rm -rf /var/lib/apt/lists/*
+FROM node:lts-bookworm
 
-# Step 3: Set working directory
-WORKDIR /root/qadeer_bot
+RUN apt-get update && \
+  apt-get install -y \
+  ffmpeg \
+  imagemagick \
+  webp && \
+  apt-get upgrade -y && \
+  npm i pm2 -g && \
+  rm -rf /var/lib/apt/lists/*
+  
+RUN git clone https://github.com/Qadeer-Xtech/QADEER-AI /root/qadeer_bot
+WORKDIR /root/qadeer_bot/
 
-# Step 4: Copy package files and install dependencies
-COPY package*.json ./
-RUN npm install --omit=dev
 
-# Step 5: Copy all your bot's source code
+COPY package.json .
+RUN npm install pm2 -g
+RUN npm install --legacy-peer-deps
+
 COPY . .
 
-# Step 6: Define the command to run your bot
-CMD ["node", "control.js"]
+EXPOSE 5000
+
+CMD ["npm", "run" , "ezra"]
