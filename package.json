@@ -1,7 +1,7 @@
 
  {
   "name": "QADEER-AI",
-  "version": "2.0.0",
+  "version": "4.0.0",
   "description": "",
   "main": "control.js",
   "type": "commonjs",
@@ -156,4 +156,5 @@
     "youtubedl-core": "^4.11.7"
   }
 }
+
 
