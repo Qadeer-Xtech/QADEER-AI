@@ -68,7 +68,6 @@ const {
 const {
     recupevents
 } = require('./lib/welcome');
-let evt = require(__dirname + '/plugins');
 const {
     isUserBanned
 } = require('./lib/banUser');
@@ -78,6 +77,26 @@ const {
 const {
     isGroupOnlyAdmin
 } = require('./lib/onlyAdmin');
+
+// --- Load all plugin commands from the 'plugins' folder ---
+console.log('[Qadeer-Bot] Loading commands...');
+const evt = {
+    cm: []
+};
+const pluginsDir = path.join(__dirname, 'plugins');
+fs.readdirSync(pluginsDir).forEach(file => {
+    if (path.extname(file).toLowerCase() === '.js') {
+        try {
+            const command = require(path.join(pluginsDir, file));
+            evt.cm.push(command);
+            console.log(`  ✔️  Loaded: ${file}`);
+        } catch (e) {
+            console.error(`  ❌  Error loading ${file}:`, e);
+        }
+    }
+});
+console.log('[Qadeer-Bot] All commands loaded successfully.');
+
 
 // Bot Configuration
 var session = conf.SESSION_ID.replace('Qadeer~', '');
@@ -207,7 +226,9 @@ async function startQadeerBot() {
                 }
                 text += '\nPlease read the group description to avoid being removed.';
                 sock.sendMessage(update.id, {
-                    image: { url: ppUrl },
+                    image: {
+                        url: ppUrl
+                    },
                     caption: text,
                     mentions: update.participants
                 });
@@ -216,7 +237,10 @@ async function startQadeerBot() {
                 for (let participant of update.participants) {
                     text += `@${participant.split('@')[0]}\n`;
                 }
-                sock.sendMessage(update.id, { text: text, mentions: update.participants });
+                sock.sendMessage(update.id, {
+                    text: text,
+                    mentions: update.participants
+                });
             }
         } catch (err) {
             console.error(err);
@@ -224,10 +248,12 @@ async function startQadeerBot() {
     });
 
     // --- MAIN MESSAGE HANDLER (MERGED FOR EFFICIENCY) ---
-    sock.ev.on('messages.upsert', async ({ messages }) => {
+    sock.ev.on('messages.upsert', async ({
+        messages
+    }) => {
         const m = messages[0];
         if (!m.message || !m.key.remoteJid) return;
-        
+
         try {
             // ----- Auto Save Contacts Logic -----
             if (conf.AUTO_SAVE_CONTACTS === 'yes') {
@@ -238,21 +264,31 @@ async function startQadeerBot() {
                     await sock.sendMessage(conf.NUMERO_OWNER + '@s.whatsapp.net', {
                         contacts: {
                             displayName: "Saved by Qadeer-AI " + number,
-                            contacts: [{ vcard: vCard }]
+                            contacts: [{
+                                vcard: vCard
+                            }]
                         }
                     });
-                     await sock.sendMessage(from, { text: `Ssup! Your contact has been saved in my owner's phone.\n\n- QADEER-AI` });
+                    await sock.sendMessage(from, {
+                        text: `Ssup! Your contact has been saved in my owner's phone.\n\n- QADEER-AI`
+                    });
                 }
             }
-            
+
             // ----- Auto Reaction, Reply, and Audio Logic -----
             const messageText = m.message.conversation || m.message.extendedTextMessage?.text || "";
 
             // --- Auto Reaction Logic ---
             if (!m.key.fromMe && (conf.AUTO_REACT === 'yes' || (conf.AUTO_REACT_STATUS === 'yes' && m.key.remoteJid === 'status@broadcast'))) {
-                 const now = Date.now();
-                 if (now - lastReactionTime > 3000) { // 3 second delay
-                    const reactionKeywords = {'hello':['👋'],'thanks':['🙏'],'love':['❤️'],'bye':['👋'],'bot':['🤖']};
+                const now = Date.now();
+                if (now - lastReactionTime > 3000) { // 3 second delay
+                    const reactionKeywords = {
+                        'hello': ['👋'],
+                        'thanks': ['🙏'],
+                        'love': ['❤️'],
+                        'bye': ['👋'],
+                        'bot': ['🤖']
+                    };
                     const randomEmojis = ['😎', '🔥', '💥', '💯', '✨', '🌟', '🌈', '⚡', '💎', '👑'];
                     const words = messageText.split(/\s+/);
                     let reaction = null;
@@ -266,12 +302,17 @@ async function startQadeerBot() {
                     if (!reaction) {
                         reaction = randomEmojis[Math.floor(Math.random() * randomEmojis.length)];
                     }
-                    
-                    await sock.sendMessage(m.key.remoteJid, { react: { text: reaction, key: m.key } });
+
+                    await sock.sendMessage(m.key.remoteJid, {
+                        react: {
+                            text: reaction,
+                            key: m.key
+                        }
+                    });
                     lastReactionTime = now;
-                 }
+                }
             }
-            
+
             // --- Auto Reply & Set Auto Reply Logic ---
             if (messageText && messageText.match(/^[^\w\s]/) && m.key.fromMe) {
                 const prefix = messageText[0];
@@ -279,29 +320,47 @@ async function startQadeerBot() {
                 const args = messageText.slice(prefix.length + command.length).trim();
                 if (command === 'setautoreply' && args) {
                     autoReplyMessage = args;
-                    await sock.sendMessage(m.key.remoteJid, { text: `Auto-reply message has been updated to:\n"${autoReplyMessage}"` });
+                    await sock.sendMessage(m.key.remoteJid, {
+                        text: `Auto-reply message has been updated to:\n"${autoReplyMessage}"`
+                    });
                 }
             } else if (conf.AUTO_REPLY === 'yes' && !repliedUsers.has(m.key.remoteJid) && !m.key.fromMe && !m.key.remoteJid.endsWith('@g.us')) {
-                await sock.sendMessage(m.key.remoteJid, { text: autoReplyMessage });
+                await sock.sendMessage(m.key.remoteJid, {
+                    text: autoReplyMessage
+                });
                 repliedUsers.add(m.key.remoteJid);
             }
 
             // --- Audio Reply Logic ---
             if (conf.AUDIO_REPLY === 'yes' && !m.key.fromMe) {
-                const audioKeywords = {'heya':'hey.wav','hi':'hello.wav','hey':'hey.wav','morning':'goodmorning.wav','night':'goodnight.wav','bot':'pk.mp3','qadeer':'pk.mp3'};
+                const audioKeywords = {
+                    'heya': 'hey.wav',
+                    'hi': 'hello.wav',
+                    'hey': 'hey.wav',
+                    'morning': 'goodmorning.wav',
+                    'night': 'goodnight.wav',
+                    'bot': 'pk.mp3',
+                    'qadeer': 'pk.mp3'
+                };
                 const words = messageText.split(/\s+/);
                 for (const word of words) {
                     const audioFile = audioKeywords[word.toLocaleLowerCase()];
                     if (audioFile) {
                         const audioPath = path.join(__dirname, 'audios', audioFile);
                         if (fs.existsSync(audioPath)) {
-                            await sock.sendMessage(m.key.remoteJid, { audio: { url: audioPath }, mimetype: 'audio/mp4', ptt: true });
+                            await sock.sendMessage(m.key.remoteJid, {
+                                audio: {
+                                    url: audioPath
+                                },
+                                mimetype: 'audio/mp4',
+                                ptt: true
+                            });
                         }
-                        break; 
+                        break;
                     }
                 }
             }
-        
+
             // ----- Main Command Handler Logic -----
             const Jid = jid => {
                 if (!jid) return jid;
@@ -321,7 +380,9 @@ async function startQadeerBot() {
             var botNumber = botJid.split('@')[0];
             const isGroup = from.endsWith('@g.us');
             var sender = isGroup ? (m.key.participant || m.participant) : m.key.remoteJid;
-            if (m.key.fromMe) { sender = botJid; }
+            if (m.key.fromMe) {
+                sender = botJid;
+            }
 
             const isCmd = body.startsWith(prefixe);
             if (!isCmd) return; // If it's not a command, stop further processing
@@ -338,9 +399,11 @@ async function startQadeerBot() {
                 var isAdmin = isGroup ? groupAdmins.includes(sender) : false;
                 var isBotAdmin = isGroup ? groupAdmins.includes(botJid) : false;
 
-                const { getAllSudoNumbers } = require('./lib/sudo');
+                const {
+                    getAllSudoNumbers
+                } = require('./lib/sudo');
                 const sudoNumbers = await getAllSudoNumbers();
-                
+
                 // IMPROVEMENT: Removed hardcoded number, assuming it's in conf.SUDO
                 const allAdmins = [botJid, ...conf.SUDO.split(',').map(n => n.trim() + '@s.whatsapp.net')];
                 const isSudo = allAdmins.includes(sender);
@@ -348,14 +411,22 @@ async function startQadeerBot() {
                 // --- Permission Checks ---
                 if (conf.MODE.toLowerCase() != 'public' && !isSudo) return;
                 if (!isSudo && !isGroup && conf.PM_PERMIT === 'yes') {
-                    return sock.sendMessage(from, { text: "You don't have access to commands here." }, { quoted: m });
+                    return sock.sendMessage(from, {
+                        text: "You don't have access to commands here."
+                    }, {
+                        quoted: m
+                    });
                 }
                 if (isGroup) {
                     if (!isSudo && await isGroupBanned(from)) return;
                     if (!isAdmin && await isGroupOnlyAdmin(from)) return;
                 }
                 if (!isSudo && await isUserBanned(sender)) {
-                    return sock.sendMessage(from, { text: "You are banned from using bot commands." }, { quoted: m });
+                    return sock.sendMessage(from, {
+                        text: "You are banned from using bot commands."
+                    }, {
+                        quoted: m
+                    });
                 }
 
                 // --- Execute Command ---
@@ -371,7 +442,11 @@ async function startQadeerBot() {
                     isBotAdmin,
                     prefix: prefixe,
                     args,
-                    reply: (text) => sock.sendMessage(from, { text: text }, { quoted: m }),
+                    reply: (text) => sock.sendMessage(from, {
+                        text: text
+                    }, {
+                        quoted: m
+                    }),
                     mtype,
                     groupAdmins,
                     quoted: m.message.extendedTextMessage?.contextInfo?.quotedMessage,
@@ -387,27 +462,19 @@ async function startQadeerBot() {
 
     // --- Connection Update Handler ---
     sock.ev.on('connection.update', async (update) => {
-        const { lastDisconnect, connection } = update;
+        const {
+            lastDisconnect,
+            connection
+        } = update;
         if (connection === 'connecting') {
             console.log('ℹ️ Connecting to WhatsApp...');
         } else if (connection === 'open') {
             console.log('✅ Connected to WhatsApp!');
-            fs.readdirSync(__dirname + '/plugins').forEach(file => {
-                if (path.extname(file).toLowerCase() == '.js') {
-                    try {
-                        require(__dirname + '/plugins/' + file);
-                        console.log(file + ' Installed Successfully ✔️');
-                    } catch (e) {
-                        console.log(file + ' could not be installed due to: ' + e);
-                    }
-                }
-            });
-            console.log('Commands Installation Completed ✅');
+            // The old plugin loading code was here. It has been removed as it's now done at the start.
         } else if (connection === 'close') {
             let reason = new Boom(lastDisconnect?.error)?.output.statusCode;
             if (reason === baileys_1.DisconnectReason.badSession) {
                 console.log('Bad Session File. Please delete the session and scan again.');
-                // IMPROVEMENT: Exit process for Heroku to restart and re-authenticate
                 process.exit(1);
             } else if (reason === baileys_1.DisconnectReason.connectionClosed || reason === baileys_1.DisconnectReason.connectionLost) {
                 console.log('Connection Lost/Closed, trying to reconnect...');
