@@ -24,7 +24,6 @@
 <a href="https://github.com/Qadeer-Xtech/QADEER-AI/network/members"><img title="Forks" src="https://img.shields.io/github/forks/Qadeer-Xtech/QADEER-AI?color=blue&style=flat-square"></a>
 <a href="https://github.com/Qadeer-Xtech/QADEER-AI/watchers"><img title="Watching" src="https://img.shields.io/github/watchers/Qadeer-Xtech/QADEER-AI?label=Watchers&color=blue&style=flat-square"></a>
 <a href="https://github.com/Qadeer-Xtech/QADEER-AI/"><img title="Size" src="https://img.shields.io/github/repo-size/Qadeer-Xtech/QADEER-AI?style=flat-square&color=green"></a>
-<p align="center"><img src="https://profile-counter.glitch.me/{Qadeer-Xtech}/count.svg" alt="Qadeer-Xtech :: Visitor's Count" old_src="https://profile-counter.glitch.me/{Qadeer-Xtech}/count.svg" /></p>
 <p align="center">
 <a href="https://github.com/Qadeer-Xtech/QADEER-AI"><img title="PUBLIC-BOT" src="https://img.shields.io/static/v1?label=Language&message=English&style=flat-square&color=darkpink"></a> &nbsp;
   <img src="https://komarev.com/ghpvc/?username=Qadeer-Xtech&label=VIEWS&style=flat-square&color=blue" />
