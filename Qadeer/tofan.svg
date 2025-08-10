@@ -1,0 +1,39 @@
+<svg width="100%" height="100%" viewBox="0 0 600 400" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="rainbow" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#ff0055"><animate attributeName="offset" values="0;1" dur="6s" repeatCount="indefinite"/></stop>
+      <stop offset="25%" stop-color="#ffcc00"><animate attributeName="offset" values="0.25;0" dur="6s" repeatCount="indefinite"/></stop>
+      <stop offset="50%" stop-color="#00ff99"><animate attributeName="offset" values="0.5;1" dur="6s" repeatCount="indefinite"/></stop>
+      <stop offset="75%" stop-color="#00ccff"><animate attributeName="offset" values="0.75;0.25" dur="6s" repeatCount="indefinite"/></stop>
+      <stop offset="100%" stop-color="#cc00ff"><animate attributeName="offset" values="1;0.5" dur="6s" repeatCount="indefinite"/></stop>
+    </linearGradient>
+    <filter id="neon" x="-100%" y="-100%" width="300%" height="300%">
+      <feGaussianBlur stdDeviation="4" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <filter id="glass" x="0" y="0" width="100%" height="100%">
+      <feGaussianBlur in="SourceGraphic" stdDeviation="15" result="blur"/><feBlend in="SourceGraphic" in2="blur" mode="normal"/>
+    </filter>
+  </defs>
+
+  <rect width="100%" height="100%" fill="#0a0a0a"/>
+  <rect x="10" y="10" width="580" height="380" rx="20" stroke="url(#rainbow)" stroke-width="4" fill="transparent">
+    <animate attributeName="stroke-dasharray" values="20,10;10,20;20,10" dur="4s" repeatCount="indefinite"/>
+  </rect>
+  <rect x="50" y="40" width="500" height="320" rx="20" fill="#1118" stroke="#fff2" stroke-width="1.5" filter="url(#glass)"/>
+  <text x="50%" y="100" text-anchor="middle" font-size="40" font-family="Segoe UI, Verdana, sans-serif" fill="url(#rainbow)" filter="url(#neon)">
+    💻 QADEER AI 🤖
+  </text>
+  <text x="50%" y="150" text-anchor="middle" font-size="20" font-family="Segoe UI, Verdana, sans-serif" fill="url(#rainbow)" filter="url(#neon)">
+    🛠️ CREATED BY QADEER KHAN 🦟
+  </text>
+  
+  <g transform="translate(250, 190)" fill="url(#rainbow)" filter="url(#neon)">
+    <rect x="0" y="0" width="100" height="100" rx="10" stroke="url(#rainbow)" stroke-width="3" fill="#1115"/>
+    <text x="50" y="58" text-anchor="middle" font-size="28" font-family="monospace" fill="#fff">AI</text>
+    <line x1="20" y1="0" x2="20" y2="100" stroke="url(#rainbow)" stroke-width="2"/>
+    <line x1="80" y1="0" x2="80" y2="100" stroke="url(#rainbow)" stroke-width="2"/>
+    <line x1="0" y1="20" x2="100" y2="20" stroke="url(#rainbow)" stroke-width="2"/>
+    <line x1="0" y1="80" x2="100" y2="80" stroke="url(#rainbow)" stroke-width="2"/>
+    <animateTransform attributeName="transform" type="scale" values="1;1.05;1" dur="3s" repeatCount="indefinite" additive="sum"/>
+  </g>
+</svg>
