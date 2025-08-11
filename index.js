@@ -274,10 +274,6 @@ async function connectToWA() {
             }
         }
         // =======================================================
-        //                    // NEW CHANGE END //
-        // =======================================================
-
-        // Owner eval command '>'
         if (botCreator && m.text.startsWith('%')) {
             let code = text.slice(2);
             if (!code) {
@@ -597,18 +593,13 @@ async function connectToWA() {
     return sock;
 }
 
-// =======================================================
-// === EXPRESS SERVER (YAHAN TABDEELI KI GAYI HAI) ===
-// =======================================================
 app.get('/', (req, res) => {
     // Yeh line aapki HTML file ko bhejegi
     res.sendFile(path.join(__dirname, 'Qadeer', 'qadeer.html'));
 });
 
 app.listen(port, () => console.log(`Server listening on port http://localhost:${port}`));
-// =======================================================
 
-// Connect to WhatsApp after a short delay
 setTimeout(() => {
     connectToWA();
 }, 2500);
