@@ -141,6 +141,7 @@ async function connectToWA() {
             console.log('Bot connected to whatsapp ✅');
             const path = require('path');
             fs.readdirSync('./plugins/').forEach(plugin => {
+                console.log("Loading Plugin --->", plugin); // YEH LINE ADD KI GAYI HAI
                 if (path.extname(plugin).toLowerCase() == '.js') {
                     require('./plugins/' + plugin);
                 }
@@ -604,4 +605,3 @@ app.listen(port, () => console.log(`Server listening on port http://localhost:${
 setTimeout(() => {
     connectToWA();
 }, 2500);
-
