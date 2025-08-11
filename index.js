@@ -57,6 +57,7 @@ const fs = require('fs');
 const ff = require('fluent-ffmpeg');
 const P = require('pino');
 const config = require('./config');
+const groupMessageHandler = require('./lib/group-handler.js');
 
 const GroupEvents = require('./lib/groupevents');
 const qrcode = require('qrcode-terminal');
@@ -146,7 +147,7 @@ async function connectToWA() {
             });
             console.log('Plugins installed successful ✅');
             console.log('🧬 Installing Plugins');
-            let startMessage = `╔═◈『𝐐𝐀𝐃𝐄𝐄𝐑-𝐀𝐈』◈═╗\n║🪀 ┃ *PRÉFIX:* ➥${config.PREFIX}\n║\n║♻️ ┃ *MODE:* *[${config.MODE}]*\n║\n║📦 ┃ *BOT REPO:*\n║      *After Final Update* \n║\n╚══════════════════╝\n> *𝙿𝙾𝚆𝙴𝚁𝙴𝙳 𝙱𝚈 𝚀𝙰𝙳𝙴𝙴𝚁 𝙺𝙷𝙰𝙽*`;
+            let startMessage = `╔═◈『𝐐𝐀𝐃𝐄𝐄𝐑-𝐀𝐈』◈═╗\n║🪀 ┃ *PRÉFIX:* ➥${config.PREFIX}\n║\n║♻️ ┃ *MODE:* *[${config.MODE}]*\n║\n║📦 ┃ *BOT REPO:*\n║      *After Final Update* \n║\n╚══════════════════╝\n> *ᴘᴏᴡᴇʀᴇᴅ ʙʏ ǫᴀᴅᴇᴇʀ ᴋʜᴀɴ*`;
             sock.sendMessage(sock.user.id, {
                 image: { url: 'https://qu.ax/Pusls.jpg' },
                 caption: startMessage
