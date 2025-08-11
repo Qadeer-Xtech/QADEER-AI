@@ -140,12 +140,19 @@ async function connectToWA() {
         } else if (connection === 'open') {
             console.log('Bot connected to whatsapp ✅');
             const path = require('path');
+            
+            // YAHAN PAR NAYA ERROR HANDLING SYSTEM ADD KIYA GAYA HAI
             fs.readdirSync('./plugins/').forEach(plugin => {
-                console.log("Loading Plugin --->", plugin); // YEH LINE ADD KI GAYI HAI
-                if (path.extname(plugin).toLowerCase() == '.js') {
-                    require('./plugins/' + plugin);
+                try {
+                    if (path.extname(plugin).toLowerCase() == '.js') {
+                        require('./plugins/' + plugin);
+                    }
+                } catch (e) {
+                    console.error(`❌ Error in Plugin: ${plugin}\n`);
+                    console.error(e);
                 }
             });
+            
             console.log('Plugins installed successful ✅');
             console.log('🧬 Installing Plugins');
             let startMessage = `╔═◈『𝐐𝐀𝐃𝐄𝐄𝐑-𝐀𝐈』◈═╗\n║🪀 ┃ *PRÉFIX:* ➥${config.PREFIX}\n║\n║♻️ ┃ *MODE:* *[${config.MODE}]*\n║\n║📦 ┃ *BOT REPO:*\n║      *After Final Update* \n║\n╚══════════════════╝\n> *ᴘᴏᴡᴇʀᴇᴅ ʙʏ ǫᴀᴅᴇᴇʀ ᴋʜᴀɴ*`;
