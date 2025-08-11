@@ -9,26 +9,23 @@ const commands = [];
  * @param {function} func - Command ke chalne wala function.
  */
 function cmd(info, func) {
-    // FIX 1: Input ki Jaanch Partal (Validation)
-    // Yeh check karta hai ke command mein zaroori cheezein hain ya nahi.
+    // YAHAN CHANGE KIYA GAYA HAI: Ab yeh error ko throw karega
     if (!info || typeof info.pattern !== 'string' || info.pattern.trim() === '') {
-        console.error("Error: Command is missing a valid 'pattern'.");
-        return;
+        // Pehle yahan console.error tha, ab throw hai
+        throw new Error("Command is missing a valid 'pattern'.");
     }
     if (typeof func !== 'function') {
-        console.error(`Error: The command for pattern '${info.pattern}' does not have a valid function.`);
-        return;
+        // Pehle yahan console.error tha, ab throw hai
+        throw new Error(`The command for pattern '${info.pattern}' does not have a valid function.`);
     }
 
-    // FIX 2: Original object ko tabdeel hone se bachana aur defaults set karna.
-    // {...info} user ke diye gaye object ki COPY banata hai.
     const data = {
         desc: '',
         fromMe: false,
         category: 'misc',
         dontAddCommandList: false,
         filename: "Not Provided",
-        ...info, // User ki di gayi maloomat yahan copy ho jayegi.
+        ...info, 
         function: func,
     };
 
@@ -36,9 +33,8 @@ function cmd(info, func) {
     return data;
 }
 
-// FIX 3: Exports ko saaf aur behtar banana.
 module.exports = {
     cmd,
-    AddCommand: cmd, // Compatibility ke liye rakha gaya hai
+    AddCommand: cmd,
     commands,
 };
