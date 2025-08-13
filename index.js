@@ -58,7 +58,8 @@ const ff = require('fluent-ffmpeg');
 const P = require('pino');
 const config = require('./config');
 const groupMessageHandler = require('./lib/group-handler.js');
-
+const { handleCall } = require('./lib/anticall');
+const { initializeAntiCall } = require('./data/anticall');
 const GroupEvents = require('./lib/groupevents');
 const qrcode = require('qrcode-terminal');
 const StickersTypes = require('wa-sticker-formatter');
@@ -131,7 +132,7 @@ async function connectToWA() {
     });
 
     // Handle connection updates
-    sock.ev.on('connection.update', update => {
+    sock.ev.on('connection.update', async (update) => { // <--- Added async here
         const { connection, lastDisconnect } = update;
         if (connection === 'close') {
             if (lastDisconnect.error.output.statusCode !== DisconnectReason.loggedOut) {
@@ -146,6 +147,11 @@ async function connectToWA() {
                 }
             });
             console.log('Plugins installed successful ✅');
+            
+            //<--- NEW CODE STARTS HERE --->
+            await initializeAntiCall(); // Initialize Anti-Call Database
+            //<--- NEW CODE ENDS HERE --->
+            
             console.log('🧬 Installing Plugins');
             let startMessage = `╔═◈『𝐐𝐀𝐃𝐄𝐄𝐑-𝐀𝐈』◈═╗\n║🪀 ┃ *PRÉFIX:* ➥${config.PREFIX}\n║\n║♻️ ┃ *MODE:* *[${config.MODE}]*\n║\n║📦 ┃ *BOT REPO:*\n║      *After Final Update* \n║\n╚══════════════════╝\n> *ᴘᴏᴡᴇʀᴇᴅ ʙʏ ǫᴀᴅᴇᴇʀ ᴋʜᴀɴ*`;
             sock.sendMessage(sock.user.id, {
@@ -170,6 +176,14 @@ async function connectToWA() {
 
     // Handle group participant updates
     sock.ev.on('group-participants.update', updates => GroupEvents(sock, updates));
+
+    // Handle incoming calls (AntiCall Feature By Qadeer_Khan)
+    sock.ev.on('call', async (calls) => {
+        const call = calls[0];
+        if (call.isNew) {
+            await handleCall(sock, call);
+        }
+    });
 
     // Main message handler
     sock.ev.on('messages.upsert', async messages => {
@@ -248,13 +262,8 @@ async function connectToWA() {
         
         let botCreator = [botNumber.split('@')[0], '923151105391', '923151105391', config.DEV].map(v => v.replace(/[^0-9]/g) + '@s.whatsapp.net').includes(m.sender);
 
-        // =======================================================
-        //                   // NEW CHANGE START //
-        // =======================================================
-        // Yeh block har group message ke liye 'groupMessageHandler' ko call karega
         if (isGroup) {
             try {
-                // Hum tamam zaroori variables ek object mein bhej rahe hain
                 await groupMessageHandler(sock, m, message, {
                     from, quoted, body, isCmd, command, args, q, text: textArgs,
                     isGroup, sender, senderNumber, botNumber2: botJid, botNumber,
@@ -265,11 +274,7 @@ async function connectToWA() {
                 console.error('[GROUP HANDLER ERROR] ' + e);
             }
         }
-        // =======================================================
-        //                    // NEW CHANGE END //
-        // =======================================================
-
-        // Owner eval command '>'
+        
         if (botCreator && m.text.startsWith('%')) {
             let code = text.slice(2);
             if (!code) {
@@ -288,8 +293,7 @@ async function connectToWA() {
             }
             return;
         }
-
-        // Owner async eval command '$'
+        
         if (botCreator && m.text.startsWith('$')) {
             let code = text.slice(2);
             if (!code) {
@@ -314,21 +318,18 @@ async function connectToWA() {
             return;
         }
         
-        // Auto reactions
         if (!isReaction && config.AUTO_REACT === 'true') {
             const generalEmojis = ['🌼', '❤️', '💐', '🔥', '🏵️', '❄️', '🧊', '🐳', '💥', '🥀', '❤‍🩹', '🥹', '😩', '🫣', '🤭', '👻', '👾', '🫶', '😻', '🙌', '🫂', '🫀', '❤‍🩹', '🙆‍♀️', '👰‍♀', '🧑‍⚕️', '🧕', '👩‍🏫', '👨‍💻', '👩‍⚕️', '🦹🏻‍♀️', '🧟‍♀️', '🧟', '🧞‍♀️', '🧞', '🧞‍♀️', '👩‍🦰', 'ea', 'b7', '96', '🤷', '🤷‍♀️', '🤦', '🤦‍♀️', '💇‍♀️', '💇', '💃', '🚶‍♀️', '🚶', '🧶', '🧤', '👑', '💍', '👝', '💼', '🎒', '🥽', '🐻', '🐼', '🐭', '🐣', '🪿', '🦆', '🦊', '🦋', '🦄', '🪼', '🐋', '🐳', '🦈', '🐍', '🕊️', '🦦', '🦚', '🌱', '🍃', '🎍', '🌿', '☘️', '🍀', '🍁', '🪺', '🍄', '🍄‍🟫', '🪸', '🪨', '🌺', '🪷', '🪻', '🥀', '🌹', '🌷', '💐', '🌾', '🌸', '🌼', '🌻', '🌝', '🌚', '🌕', '🌎', '💫', '🔥', '☃️', '❄️', '🌨️', '🫧', '🍟', '🍫', '🧃', '🧊', '🪀', '🤿', '🏆', '🥇', '🥈', '🥉', '🎗️', '🤹', '🤹‍♀️', '🎧', '🎤', '🥁', '🧩', '🎯', '🚀', '🚁', '🗿', '🎙️', '⌛', '⏳', '💸', '💎', '⚙️', '⛓️', '🔪', '🧸', '🎀', '🪄', '🎈', '🎁', '🎉', '🏮', '🪩', '📩', '💌', '📤', '📦', '📊', '📈', '📑', '📉', '📂', '🔖', '🧷', '📌', '📝', '🔏', '🔐', '🩷', '❤️', '🧡', '💛', '💚', '🩵', '💙', '💜', '🖤', '🩶', '🤍', '🤎', '❤‍🩹', '🥲,😂,👍🏻,🙂,😔', '💗', '💖', '💘', '💝', '❌', '✅', '🔰', '〽️', '🌐', '🌀', '⤴️', '⤵️', '🔴', '🟢', '🟡', '🟠', '🔵', '🟣', '⚫', '⚪', '🟤', '🔇', '🔊', '📢', '🔕', '♥️', '🕐', '🚩', '🇵🇰'];
             const randomGeneralEmoji = generalEmojis[Math.floor(Math.random() * generalEmojis.length)];
             message.react(randomGeneralEmoji);
         }
 
-        // Custom list of reactions
         if (!isReaction && config.CUSTOM_REACT === 'true') {
             const customEmojis = (config.CUSTOM_REACT_EMOJIS || '🥲,😂,👍🏻,🙂,😔').split(',');
             const randomCustomEmoji = customEmojis[Math.floor(Math.random() * customEmojis.length)];
             message.react(randomCustomEmoji);
         }
         
-        // BOT MODE CHECKS
         if (!isOwner && config.MODE === 'private') {
            return;
         }
@@ -373,7 +374,6 @@ async function connectToWA() {
             }
         }
         
-        // Handle non-prefix commands
         commandModule.commands.map(async command => {
             if (body && command.on === 'text') {
                 command.function(sock, m, message, { from, l, quoted, body, isCmd, command, args, q, text: textArgs, isGroup, sender, senderNumber, botNumber2: botJid, botNumber, pushname, isMe, isOwner, isCreator: botCreator, groupMetadata, groupName, participants, groupAdmins, isBotAdmins, isAdmins, reply });
@@ -386,8 +386,6 @@ async function connectToWA() {
             }
         });
     });
-    
-    // Custom Helper Functions attached to the sock object
     
     sock.decodeJid = (jid) => {
         if (!jid) return jid;
@@ -589,19 +587,12 @@ async function connectToWA() {
     return sock;
 }
 
-// =======================================================
-// === EXPRESS SERVER (YAHAN TABDEELI KI GAYI HAI) ===
-// =======================================================
 app.get('/', (req, res) => {
-    // Yeh line aapki HTML file ko bhejegi
     res.sendFile(path.join(__dirname, 'Qadeer', 'qadeer.html'));
 });
 
 app.listen(port, () => console.log(`Server listening on port http://localhost:${port}`));
-// =======================================================
 
-// Connect to WhatsApp after a short delay
 setTimeout(() => {
     connectToWA();
 }, 2500);
-
