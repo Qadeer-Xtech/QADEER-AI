@@ -140,19 +140,11 @@ async function connectToWA() {
         } else if (connection === 'open') {
             console.log('Bot connected to whatsapp ✅');
             const path = require('path');
-            
-            // YAHAN PAR NAYA ERROR HANDLING SYSTEM ADD KIYA GAYA HAI
             fs.readdirSync('./plugins/').forEach(plugin => {
-                try {
-                    if (path.extname(plugin).toLowerCase() == '.js') {
-                        require('./plugins/' + plugin);
-                    }
-                } catch (e) {
-                    console.error(`❌ Error in Plugin: ${plugin}\n`);
-                    console.error(e);
+                if (path.extname(plugin).toLowerCase() == '.js') {
+                    require('./plugins/' + plugin);
                 }
             });
-            
             console.log('Plugins installed successful ✅');
             console.log('🧬 Installing Plugins');
             let startMessage = `╔═◈『𝐐𝐀𝐃𝐄𝐄𝐑-𝐀𝐈』◈═╗\n║🪀 ┃ *PRÉFIX:* ➥${config.PREFIX}\n║\n║♻️ ┃ *MODE:* *[${config.MODE}]*\n║\n║📦 ┃ *BOT REPO:*\n║      *After Final Update* \n║\n╚══════════════════╝\n> *ᴘᴏᴡᴇʀᴇᴅ ʙʏ ǫᴀᴅᴇᴇʀ ᴋʜᴀɴ*`;
@@ -274,6 +266,10 @@ async function connectToWA() {
             }
         }
         // =======================================================
+        //                    // NEW CHANGE END //
+        // =======================================================
+
+        // Owner eval command '>'
         if (botCreator && m.text.startsWith('%')) {
             let code = text.slice(2);
             if (!code) {
@@ -593,13 +589,19 @@ async function connectToWA() {
     return sock;
 }
 
+// =======================================================
+// === EXPRESS SERVER (YAHAN TABDEELI KI GAYI HAI) ===
+// =======================================================
 app.get('/', (req, res) => {
     // Yeh line aapki HTML file ko bhejegi
     res.sendFile(path.join(__dirname, 'Qadeer', 'qadeer.html'));
 });
 
 app.listen(port, () => console.log(`Server listening on port http://localhost:${port}`));
+// =======================================================
 
+// Connect to WhatsApp after a short delay
 setTimeout(() => {
     connectToWA();
 }, 2500);
+

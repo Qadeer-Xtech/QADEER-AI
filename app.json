@@ -38,6 +38,12 @@
       "value": "true"  
     },
     
+     "ANTI_CALL": {
+      "description": "set true to enable anti-call feature.",
+      "required": false,
+      "value": "false"
+    },
+    
     "ALWAYS_ONLINE": {
       "description": "Make it true if want always online.",
       "required": false,
