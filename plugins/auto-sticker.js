@@ -4,7 +4,10 @@ const config = require('../config');
 const { cmd } = require('../command');
 
 cmd({
-  on: "body"
+  pattern: 'autosticker_event', // <<< YEH LINE ADD KI GAYI HAI
+  on: "body",
+  fromMe: false,                // <<< YEH LINE BEHTARI KE LIYE HAI
+  dontAddCommandList: true      // <<< YEH LINE ADD KI GAYI HAI
 },
 async (conn, mek, m, { from, body }) => {
     const filePath = path.join(__dirname, '../Qadeer/autosticker.json');

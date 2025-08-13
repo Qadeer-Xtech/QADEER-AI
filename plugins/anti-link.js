@@ -2,7 +2,10 @@ const { cmd } = require('../command');
 const config = require("../config");
 
 cmd({
-  'on': "body"
+  pattern: 'antilink_event',     // <<< YEH LINE ADD KI GAYI HAI
+  on: "body",
+  fromMe: false,                 // <<< YEH LINE BEHTARI KE LIYE HAI
+  dontAddCommandList: true       // <<< YEH LINE ADD KI GAYI HAI
 }, async (conn, m, store, {
   from,
   body,

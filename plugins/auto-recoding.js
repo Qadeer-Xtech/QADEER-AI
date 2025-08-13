@@ -6,7 +6,10 @@ const {cmd , commands} = require('../command')
 
 //auto recording
 cmd({
-  on: "body"
+  pattern: 'autorecording_event', // <<< YEH LINE ADD KI GAYI HAI
+  on: "body",
+  fromMe: false,                  // <<< YEH LINE BEHTARI KE LIYE HAI
+  dontAddCommandList: true        // <<< YEH LINE ADD KI GAYI HAI
 },    
 async (conn, mek, m, { from, body, isOwner, isSudo }) => {       
  if (config.AUTO_RECORDING === 'true') {

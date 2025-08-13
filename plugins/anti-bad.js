@@ -3,7 +3,10 @@ const config = require("../config");
 
 // Anti-Bad Words System
 cmd({
-  'on': "body"
+  pattern: 'antibad_event',      // <<< YEH LINE ADD KI GAYI HAI
+  on: "body",
+  fromMe: false,                 // <<< YEH LINE BEHTARI KE LIYE HAI
+  dontAddCommandList: true       // <<< YEH LINE ADD KI GAYI HAI
 }, async (conn, m, store, {
   from,
   body,

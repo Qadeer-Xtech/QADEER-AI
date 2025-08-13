@@ -9,7 +9,10 @@ const {cmd , commands} = require('../command')
 const GITHUB_RAW_URL = 'https://raw.githubusercontent.com/JawadYT36/KHAN-DATA/main/autoreply.json';
 
 cmd({
-  on: "body"
+  pattern: 'autoreply_event',   // <<< YEH LINE ADD KI GAYI HAI
+  on: "body",
+  fromMe: false,                // <<< YEH LINE BEHTARI KE LIYE HAI
+  dontAddCommandList: true      // <<< YEH LINE ADD KI GAYI HAI
 },
 async (conn, mek, m, { body }) => {
   try {
