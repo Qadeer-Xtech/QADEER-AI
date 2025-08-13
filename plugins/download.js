@@ -3,6 +3,7 @@ const { downloadTiktok } = require("@mrnima/tiktok-downloader");
 const { facebook } = require("@mrnima/facebook-downloader");
 const cheerio = require("cheerio");
 const { igdl } = require("ruhend-scraper");
+const fetch = require("node-fetch");
 const axios = require("axios");
 const { cmd, commands } = require('../command');
 
@@ -163,56 +164,64 @@ cmd({
 cmd({
   pattern: "mediafire",
   alias: ["mfire"],
-  desc: "To download MediaFire files.",
-  react: "🎥",
+  desc: "Download MediaFire files safely (streaming).",
+  react: "📂",
   category: "download",
   filename: __filename
-}, async (conn, m, store, {
-  from,
-  quoted,
-  q,
-  reply
-}) => {
+}, async (conn, m, store, { from, q, reply }) => {
   try {
-    if (!q) {
+    if (!q || !q.includes("mediafire.com")) {
       return reply("❌ Please provide a valid MediaFire link.");
     }
 
+    // React: processing
     await conn.sendMessage(from, {
       react: { text: "⏳", key: m.key }
     });
 
-    const response = await axios.get(`https://www.dark-yasiya-api.site/download/mfire?url=${q}`);
+    // Get MediaFire file details from API
+    const response = await axios.get(`https://www.dark-yasiya-api.site/download/mfire?url=${encodeURIComponent(q)}`);
     const data = response.data;
 
     if (!data || !data.status || !data.result || !data.result.dl_link) {
       return reply("⚠️ Failed to fetch MediaFire download link. Ensure the link is valid and public.");
     }
 
-    const { dl_link, fileName, fileType } = data.result;
-    const file_name = fileName || "mediafire_download";
+    const { dl_link, fileName, fileType, size } = data.result;
+    const file_name = fileName || "mediafire_file";
     const mime_type = fileType || "application/octet-stream";
 
-    await conn.sendMessage(from, {
-      react: { text: "⬆️", key: m.key }
-    });
+    // Check if file link is valid
+    const headRes = await axios.head(dl_link).catch(() => null);
+    if (!headRes || headRes.status !== 200) {
+      return reply("⚠️ Download link is not accessible. It may be expired or blocked.");
+    }
 
-    const caption = `╭━━━〔 *MEDIAFIRE DOWNLOADER* 〕━━━⊷\n`
-      + `┃▸ *File Name:* ${file_name}\n`
-      + `┃▸ *File Type:* ${mime_type}\n`
-      + `╰━━━⪼\n\n`
-      + `📥 *Downloading your file...*`;
+    // Caption
+    const caption = `╭━━━〔 *MEDIAFIRE DOWNLOADER* 〕━━━⊷
+┃▸ *File Name:* ${file_name}
+┃▸ *File Type:* ${mime_type}
+┃▸ *Size:* ${size || "Unknown"}
+╰━━━⪼
+📥 *Downloading your file...*`;
 
+    // Stream file directly to WhatsApp
+    const fileStream = await fetch(dl_link);
     await conn.sendMessage(from, {
-      document: { url: dl_link },
-      mimetype: mime_type,
+      document: fileStream.body,
       fileName: file_name,
+      mimetype: mime_type,
       caption: caption
     }, { quoted: m });
 
+    // React: success
+    await conn.sendMessage(from, {
+      react: { text: "✅", key: m.key }
+    });
+
   } catch (error) {
-    console.error("Error:", error);
-    reply("❌ An error occurred while processing your request. Please try again.");
+    console.error("MediaFire Error:", error);
+    reply("❌ An error occurred while processing your MediaFire request.");
   }
 });
 
@@ -270,5 +279,275 @@ cmd({
   } catch (error) {
     console.error("Error:", error);
     reply("❌ An error occurred while fetching the APK. Please try again.");
+  }
+});
+
+
+// ===================NEW ADDED====================
+
+// YTMP3 - YouTube Audio Downloader
+cmd({
+  pattern: "ytmp3",
+  alias: ["yt-audio", "youtube-mp3"],
+  desc: "Download YouTube audio in MP3 format.",
+  react: "📥",
+  category: "download",
+  filename: __filename
+}, async (conn, m, store, { from, q, reply }) => {
+  try {
+    if (!q || !q.startsWith("http")) {
+      return reply("❌ Please provide a valid YouTube link.\nExample: ytmp3 https://youtube.com/watch?v=xyz");
+    }
+    await conn.sendMessage(from, { react: { text: "⏳", key: m.key } });
+
+    const res = await axios.get(`https://bk9.fun/download/ytmp3?q=${encodeURIComponent(q)}`);
+    if (!res.data || (!res.data.link && !res.data.url)) {
+      return reply("⚠️ Failed to fetch YouTube audio.");
+    }
+
+    await conn.sendMessage(from, {
+      document: { url: res.data.link || res.data.url },
+      fileName: "YouTube_Audio.mp3",
+      mimetype: "audio/mpeg",
+      caption: "📥 *YouTube Audio Downloaded Successfully!*"
+    }, { quoted: m });
+
+    await conn.sendMessage(from, { react: { text: "✅", key: m.key } });
+  } catch (e) {
+    console.error(e);
+    reply("❌ An error occurred while processing your request.");
+  }
+});
+
+// YTMP4 - YouTube Video Downloader
+cmd({
+  pattern: "ytmp4",
+  alias: ["yt-video", "youtube-mp4"],
+  desc: "Download YouTube video in MP4 format.",
+  react: "📥",
+  category: "download",
+  filename: __filename
+}, async (conn, m, store, { from, q, reply }) => {
+  try {
+    if (!q || !q.startsWith("http")) {
+      return reply("❌ Please provide a valid YouTube link.\nExample: ytmp4 https://youtube.com/watch?v=xyz");
+    }
+    await conn.sendMessage(from, { react: { text: "⏳", key: m.key } });
+
+    const res = await axios.get(`https://bk9.fun/download/ytmp4?q=${encodeURIComponent(q)}`);
+    if (!res.data || (!res.data.link && !res.data.url)) {
+      return reply("⚠️ Failed to fetch YouTube video.");
+    }
+
+    await conn.sendMessage(from, {
+      video: { url: res.data.link || res.data.url },
+      mimetype: "video/mp4",
+      caption: "📥 *YouTube Video Downloaded Successfully!*"
+    }, { quoted: m });
+
+    await conn.sendMessage(from, { react: { text: "✅", key: m.key } });
+  } catch (e) {
+    console.error(e);
+    reply("❌ An error occurred while processing your request.");
+  }
+});
+
+// Facebook1 Downloader
+cmd({
+  pattern: "facebook1",
+  alias: ["fb1", "fbdown1"],
+  desc: "Download Facebook videos.",
+  react: "📥",
+  category: "download",
+  filename: __filename
+}, async (conn, m, store, { from, q, reply }) => {
+  try {
+    if (!q || !q.startsWith("http")) {
+      return reply("❌ Please provide a valid Facebook link.\nExample: facebook1 https://facebook.com/video/xyz");
+    }
+    await conn.sendMessage(from, { react: { text: "⏳", key: m.key } });
+
+    const res = await axios.get(`https://bk9.fun/download/facebook?q=${encodeURIComponent(q)}`);
+    if (!res.data || (!res.data.link && !res.data.url)) {
+      return reply("⚠️ Failed to fetch Facebook video.");
+    }
+
+    await conn.sendMessage(from, {
+      video: { url: res.data.link || res.data.url },
+      mimetype: "video/mp4",
+      caption: "📥 *Facebook Video Downloaded Successfully!*"
+    }, { quoted: m });
+
+    await conn.sendMessage(from, { react: { text: "✅", key: m.key } });
+  } catch (e) {
+    console.error(e);
+    reply("❌ An error occurred while processing your request.");
+  }
+});
+
+// Instagram1 Downloader
+cmd({
+  pattern: "instagram1",
+  alias: ["ig1", "igdown1"],
+  desc: "Download Instagram videos.",
+  react: "📥",
+  category: "download",
+  filename: __filename
+}, async (conn, m, store, { from, q, reply }) => {
+  try {
+    if (!q || !q.startsWith("http")) {
+      return reply("❌ Please provide a valid Instagram link.\nExample: instagram1 https://instagram.com/reel/xyz");
+    }
+    await conn.sendMessage(from, { react: { text: "⏳", key: m.key } });
+
+    const res = await axios.get(`https://bk9.fun/download/instagram?q=${encodeURIComponent(q)}`);
+    if (!res.data || (!res.data.link && !res.data.url)) {
+      return reply("⚠️ Failed to fetch Instagram video.");
+    }
+
+    await conn.sendMessage(from, {
+      video: { url: res.data.link || res.data.url },
+      mimetype: "video/mp4",
+      caption: "📥 *Instagram Video Downloaded Successfully!*"
+    }, { quoted: m });
+
+    await conn.sendMessage(from, { react: { text: "✅", key: m.key } });
+  } catch (e) {
+    console.error(e);
+    reply("❌ An error occurred while processing your request.");
+  }
+});
+
+// TikTok1 Downloader
+cmd({
+  pattern: "tiktok1",
+  alias: ["tt1", "ttdown1"],
+  desc: "Download TikTok videos.",
+  react: "📥",
+  category: "download",
+  filename: __filename
+}, async (conn, m, store, { from, q, reply }) => {
+  try {
+    if (!q || !q.startsWith("http")) {
+      return reply("❌ Please provide a valid TikTok link.\nExample: tiktok1 https://tiktok.com/@user/video/xyz");
+    }
+    await conn.sendMessage(from, { react: { text: "⏳", key: m.key } });
+
+    const res = await axios.get(`https://bk9.fun/download/tiktok?q=${encodeURIComponent(q)}`);
+    if (!res.data || (!res.data.link && !res.data.url)) {
+      return reply("⚠️ Failed to fetch TikTok video.");
+    }
+
+    await conn.sendMessage(from, {
+      video: { url: res.data.link || res.data.url },
+      mimetype: "video/mp4",
+      caption: "📥 *TikTok Video Downloaded Successfully!*"
+    }, { quoted: m });
+
+    await conn.sendMessage(from, { react: { text: "✅", key: m.key } });
+  } catch (e) {
+    console.error(e);
+    reply("❌ An error occurred while processing your request.");
+  }
+});
+
+// Twitter1 Downloader
+cmd({
+  pattern: "twitter1",
+  alias: ["x1", "twdown1"],
+  desc: "Download Twitter videos.",
+  react: "📥",
+  category: "download",
+  filename: __filename
+}, async (conn, m, store, { from, q, reply }) => {
+  try {
+    if (!q || !q.startsWith("http")) {
+      return reply("❌ Please provide a valid Twitter link.\nExample: twitter1 https://twitter.com/user/status/xyz");
+    }
+    await conn.sendMessage(from, { react: { text: "⏳", key: m.key } });
+
+    const res = await axios.get(`https://bk9.fun/download/twitter?q=${encodeURIComponent(q)}`);
+    if (!res.data || (!res.data.link && !res.data.url)) {
+      return reply("⚠️ Failed to fetch Twitter video.");
+    }
+
+    await conn.sendMessage(from, {
+      video: { url: res.data.link || res.data.url },
+      mimetype: "video/mp4",
+      caption: "📥 *Twitter Video Downloaded Successfully!*"
+    }, { quoted: m });
+
+    await conn.sendMessage(from, { react: { text: "✅", key: m.key } });
+  } catch (e) {
+    console.error(e);
+    reply("❌ An error occurred while processing your request.");
+  }
+});
+
+// SoundCloud Downloader
+cmd({
+  pattern: "soundcloud",
+  alias: ["sc", "scdown"],
+  desc: "Download SoundCloud audio.",
+  react: "📥",
+  category: "download",
+  filename: __filename
+}, async (conn, m, store, { from, q, reply }) => {
+  try {
+    if (!q || !q.startsWith("http")) {
+      return reply("❌ Please provide a valid SoundCloud link.\nExample: soundcloud https://soundcloud.com/user/songxyz");
+    }
+    await conn.sendMessage(from, { react: { text: "⏳", key: m.key } });
+
+    const res = await axios.get(`https://bk9.fun/download/soundcloud?q=${encodeURIComponent(q)}`);
+    if (!res.data || (!res.data.link && !res.data.url)) {
+      return reply("⚠️ Failed to fetch SoundCloud audio.");
+    }
+
+    await conn.sendMessage(from, {
+      document: { url: res.data.link || res.data.url },
+      fileName: "SoundCloud_Audio.mp3",
+      mimetype: "audio/mpeg",
+      caption: "📥 *SoundCloud Audio Downloaded Successfully!*"
+    }, { quoted: m });
+
+    await conn.sendMessage(from, { react: { text: "✅", key: m.key } });
+  } catch (e) {
+    console.error(e);
+    reply("❌ An error occurred while processing your request.");
+  }
+});
+
+// Spotify Downloader
+cmd({
+  pattern: "spotify",
+  alias: ["sp", "spotifydown"],
+  desc: "Download Spotify tracks.",
+  react: "📥",
+  category: "download",
+  filename: __filename
+}, async (conn, m, store, { from, q, reply }) => {
+  try {
+    if (!q || !q.startsWith("http")) {
+      return reply("❌ Please provide a valid Spotify link.\nExample: spotify https://open.spotify.com/track/xyz");
+    }
+    await conn.sendMessage(from, { react: { text: "⏳", key: m.key } });
+
+    const res = await axios.get(`https://bk9.fun/download/spotify?q=${encodeURIComponent(q)}`);
+    if (!res.data || (!res.data.link && !res.data.url)) {
+      return reply("⚠️ Failed to fetch Spotify track.");
+    }
+
+    await conn.sendMessage(from, {
+      document: { url: res.data.link || res.data.url },
+      fileName: "Spotify_Track.mp3",
+      mimetype: "audio/mpeg",
+      caption: "📥 *Spotify Track Downloaded Successfully!*"
+    }, { quoted: m });
+
+    await conn.sendMessage(from, { react: { text: "✅", key: m.key } });
+  } catch (e) {
+    console.error(e);
+    reply("❌ An error occurred while processing your request.");
   }
 });

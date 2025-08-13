@@ -21,7 +21,7 @@ cmd({
   alias: ["buttons", "mainmenu"],
   use: '.menu2',
   desc: "Show main menu with buttons",
-  category: "main",
+  category: "a-main",
   react: "⚙️",
   filename: __filename
 },

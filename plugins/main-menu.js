@@ -18,7 +18,7 @@ cmd({
   alias: ["❄️", "mega", "allmenu"],
   use: '.menu',
   desc: "Show all bot commands",
-  category: "main",
+  category: "a-main",
   react: "❄️",
   filename: __filename
 },
