@@ -10,39 +10,53 @@ cmd({
 },
 async (conn, mek, m, { args, reply }) => {
     try {
-        const query = args.length ? args.join(' ') : null;
+        const query = args.join(' ').trim();
 
         if (!query) {
-            return reply('❌ Please provide a question!\n\nExample: .ai What is artificial intelligence?');
+            return reply('❌ Please provide a question!\n\n*Example:*\n.ai What is artificial intelligence?');
         }
 
         const apis = [
             `https://lance-frank-asta.onrender.com/api/gpt?q=${encodeURIComponent(query)}`,
-            `https://vapis.my.id/api/openai?q=${encodeURIComponent(query)}`
+            `https://vapis.my.id/api/openai?q=${encodeURIComponent(query)}`,
         ];
 
-        let response = null;
+        let responseText = null;
 
         for (const url of apis) {
             try {
-                const res = await axios.get(url, { timeout: 15000 });
-                if (res.data?.message) {
-                    response = res.data.message;
+                const config = {
+                    timeout: 20000,
+                    headers: {
+                        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'
+                    }
+                };
+                
+                const res = await axios.get(url, config);
+                const data = res.data;
+                const message = data.message || data.result || data.data;
+
+                if (message && typeof message === 'string') {
+                    responseText = message.trim();
+                    // console.log(`✅ API succeeded: ${url}`); // Hata diya gaya hai
                     break;
+                } else {
+                    // console.warn(`⚠️ API gave an unexpected response format: ${url}`, data); // Hata diya gaya hai
                 }
+
             } catch (err) {
-                console.error(`❌ API failed: ${url}`, err.message);
+                // console.error(`❌ API failed: ${url}`, err.message); // Hata diya gaya hai
             }
         }
 
-        if (!response) {
-            response = '⚠️ Sorry, all AI servers are currently down. Try again later!';
+        if (responseText) {
+            await reply(`🤖 *AI Response:*\n\n${responseText}`);
+        } else {
+            await reply('⚠️ Sorry, all AI servers seem to be busy or down right now. Please try again in a few moments!');
         }
 
-        await reply(`🤖 *AI Response:*\n\n${response}`);
-
     } catch (error) {
-        console.error('❌ AI Plugin Error:', error.message);
-        await reply('⚠️ Failed to fetch AI response. Please check logs.');
+        // console.error('❌ Main AI Plugin Error:', error); // Hata diya gaya hai
+        await reply('⚠️ An unexpected error occurred in the AI command.');
     }
 });
