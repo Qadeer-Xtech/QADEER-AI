@@ -1,6 +1,21 @@
 [![QADEER KHAN](https://raw.githubusercontent.com/Qadeer-Xtech/QADEER-AI/main/Qadeer/tofan.svg)](https://whatsapp.com/channel/0029Vaw6yRaBPzjZPtVtA80A)
+___
 
+## 📊 Project Stats
 
+<div align="center">
+
+| Statistic | Badge |
+|-----------|-------|
+| **Profile Views** | <img src="https://komarev.com/ghpvc/?username=SilvaMDBot&label=Profile+Views&color=9D00FF&style=flat-square"> |
+| **Last Update** | <img src="https://img.shields.io/github/last-commit/Qadeer-Xtech/QADEER-AI?color=9D00FF&label=Last+Update&style=flat-square"> |
+| **Repo Size** | <img src="https://img.shields.io/github/repo-size/Qadeer-Xtech/QADEER-AI?color=9D00FF&label=Repo+Size&style=flat-square"> |
+| **Stars** | <img src="https://img.shields.io/github/stars/QadeerXtech/QADEER-AI?color=9D00FF&label=Stars&style=flat-square"> |
+| **Forks** | <img src="https://img.shields.io/github/forks/Qadeer-Xtech/QADEER-AI?color=9D00FF&label=Forks&style=flat-square"> |
+
+</div>
+
+___
 
 <p align='center'>
     </p>
@@ -14,28 +29,6 @@
 <p align='center'>
     </p>
 <img src="https://i.imgur.com/dBaSKWF.gif" height="100" width="100%">
-
-
-
-
-<p align="center">
-<a href="https://github.com/Qadeer-Xtech/followers"><img title="Followers" src="https://img.shields.io/github/followers/Qadeer-Xtech?color=purple&style=flat-square"></a>
-<a href="https://github.com/Qadeer-Xtech/QADEER-AI/stargazers/"><img title="Stars" src="https://img.shields.io/github/stars/Qadeer-Xtech/QADEER-AI?color=blue&style=flat-square"></a>
-<a href="https://github.com/Qadeer-Xtech/QADEER-AI/network/members"><img title="Forks" src="https://img.shields.io/github/forks/Qadeer-Xtech/QADEER-AI?color=blue&style=flat-square"></a>
-<a href="https://github.com/Qadeer-Xtech/QADEER-AI/watchers"><img title="Watching" src="https://img.shields.io/github/watchers/Qadeer-Xtech/QADEER-AI?label=Watchers&color=blue&style=flat-square"></a>
-<a href="https://github.com/Qadeer-Xtech/QADEER-AI/"><img title="Size" src="https://img.shields.io/github/repo-size/Qadeer-Xtech/QADEER-AI?style=flat-square&color=green"></a>
-<p align="center">
-<a href="https://github.com/Qadeer-Xtech/QADEER-AI"><img title="PUBLIC-BOT" src="https://img.shields.io/static/v1?label=Language&message=English&style=flat-square&color=darkpink"></a> &nbsp;
-  <img src="https://komarev.com/ghpvc/?username=Qadeer-Xtech&label=VIEWS&style=flat-square&color=blue" />
-</a>
-
-
-
-
-
-
-
-
 
 
 
