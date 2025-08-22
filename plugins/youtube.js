@@ -2,7 +2,16 @@ const config = require('../config');
 const { cmd } = require('../command');
 const ytdl = require('ytdl-core');
 const yts = require("yt-search");
-const { WAMediaUpload, WAProto } = require("@whiskeysockets/baileys"); // Yeh line add karna zaroori hai
+
+// Helper function to convert stream to buffer
+const streamToBuffer = async (stream) => {
+    return new Promise((resolve, reject) => {
+        const chunks = [];
+        stream.on('data', (chunk) => chunks.push(chunk));
+        stream.on('end', () => resolve(Buffer.concat(chunks)));
+        stream.on('error', (err) => reject(err));
+    });
+};
 
 // Function to format seconds into HH:MM:SS
 function formatDuration(seconds) {
@@ -33,8 +42,7 @@ async (conn, m, mek, { q, reply }) => {
         let video;
         if (ytdl.validateURL(q)) {
             const videoId = ytdl.getURLVideoID(q);
-            const search = await yts({ videoId });
-            video = search;
+            video = await yts({ videoId });
         } else {
             const search = await yts(q);
             video = search.videos[0];
@@ -48,22 +56,17 @@ async (conn, m, mek, { q, reply }) => {
                             `*👤 Author:* ${video.author.name}\n\n` +
                             `> *© ${config.BOT_NAME}*`;
 
-        await conn.sendMessage(m.from, {
-            image: { url: video.thumbnail },
-            caption: captionText
-        }, { quoted: mek });
+        await conn.sendMessage(m.from, { image: { url: video.thumbnail }, caption: captionText }, { quoted: mek });
         
-        const audioStream = ytdl(video.url, {
-            filter: 'audioonly',
-            quality: 'highestaudio'
-        });
+        const audioStream = ytdl(video.url, { filter: 'audioonly', quality: 'highestaudio' });
         
-        // FIX: Naye Baileys ke version ke mutabiq code
+        // FIX: Stream ko buffer mein convert kar rahay hain
+        const audioBuffer = await streamToBuffer(audioStream);
+        
         await conn.sendMessage(m.from, {
-             audio: audioStream,
+             audio: audioBuffer, // Buffer bhej rahay hain
              mimetype: 'audio/mpeg',
-             fileName: `${video.title}.mp3`,
-             ptt: false
+             fileName: `${video.title}.mp3`
         }, { quoted: mek });
 
         await conn.sendMessage(m.from, { react: { text: "✅", key: m.key } });
@@ -93,8 +96,7 @@ async (conn, m, mek, { q, reply }) => {
         let video;
         if (ytdl.validateURL(q)) {
             const videoId = ytdl.getURLVideoID(q);
-            const search = await yts({ videoId });
-            video = search;
+            video = await yts({ videoId });
         } else {
             const search = await yts(q);
             video = search.videos[0];
@@ -108,19 +110,15 @@ async (conn, m, mek, { q, reply }) => {
                             `*👤 Author:* ${video.author.name}\n\n` +
                             `> *© ${config.BOT_NAME}*`;
                             
-        await conn.sendMessage(m.from, {
-            image: { url: video.thumbnail },
-            caption: captionText
-        }, { quoted: mek });
+        await conn.sendMessage(m.from, { image: { url: video.thumbnail }, caption: captionText }, { quoted: mek });
 
-        const videoStream = ytdl(video.url, {
-            filter: 'audioandvideo',
-            quality: 'highestvideo'
-        });
+        const videoStream = ytdl(video.url, { filter: 'audioandvideo', quality: 'highestvideo' });
         
-        // FIX: Naye Baileys ke version ke mutabiq code
+        // FIX: Stream ko buffer mein convert kar rahay hain
+        const videoBuffer = await streamToBuffer(videoStream);
+        
         await conn.sendMessage(m.from, {
-            video: videoStream,
+            video: videoBuffer, // Buffer bhej rahay hain
             mimetype: 'video/mp4',
             caption: `*${video.title}*`
         }, { quoted: mek });
