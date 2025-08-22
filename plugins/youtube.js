@@ -1,6 +1,6 @@
 const config = require('../config');
 const { cmd } = require('../command');
-const ytdl = require('@dark-yasiya/yt-dl.js');
+const ytdl = require('@dark-yasiya/yt-dl.js'); // Hum isi library ko istemal karenge
 const yts = require("yt-search");
 const fs = require('fs');
 
@@ -25,29 +25,21 @@ function formatDuration(seconds) {
 // AUDIO DOWNLOADER COMMAND
 //================================================================================
 cmd({
-    pattern: "new-song", // Command updated
+    pattern: "new-song",
     react: "🎵",
     desc: "Downloads audio from YouTube.",
     category: "download",
-    use: ".new-song <song name or youtube url>", // Usage updated
+    use: ".new-song <song name or youtube url>",
     filename: __filename
 },
 async (conn, m, mek, { q, reply }) => {
     if (!q) return reply("Please provide a song name or a YouTube URL.");
 
     try {
-        // Search for the video
         const search = await yts(q);
         const video = search.videos[0];
         if (!video) return reply("❌ Song not found. Please try a different name.");
 
-        const url = video.url;
-        const info = await ytdl.getInfo(url);
-
-        // Check if audio format is available
-        const audioFormat = info.formats.find(f => f.mimeType.startsWith('audio/mp4'));
-        if (!audioFormat) return reply("❌ Audio format for this video is not available.");
-        
         const captionText = `🎧 *Now Downloading Your Song* 🎧\n\n` +
                             `*✨ Title:* ${video.title}\n` +
                             `*⏳ Duration:* ${formatDuration(video.seconds)}\n` +
@@ -59,11 +51,11 @@ async (conn, m, mek, { q, reply }) => {
             caption: captionText
         }, { quoted: mek });
         
-        // Download and send the audio
-        const audioStream = await ytdl.download(url, { filter: "audioonly", quality: "highestaudio" });
+        // FIX: ytdl.mp3() function ko direct istemal kiya gaya hai
+        const { stream } = await ytdl.mp3(video.url);
         
         await conn.sendMessage(m.from, {
-             audio: audioStream,
+             audio: stream,
              mimetype: 'audio/mpeg',
              fileName: `${video.title}.mp3`
         }, { quoted: mek });
@@ -79,39 +71,27 @@ async (conn, m, mek, { q, reply }) => {
 // VIDEO DOWNLOADER COMMAND
 //================================================================================
 cmd({
-    pattern: "new-mp4", // Command updated
+    pattern: "new-mp4",
     react: "🎥",
     desc: "Downloads video from YouTube.",
     category: "download",
-    use: ".new-mp4 <video name or youtube url>", // Usage updated
+    use: ".new-mp4 <video name or youtube url>",
     filename: __filename
 },
 async (conn, m, mek, { q, reply }) => {
     if (!q) return reply("Please provide a video name or a YouTube URL.");
 
     try {
-        // Search for the video
         const search = await yts(q);
         const video = search.videos[0];
         if (!video) return reply("❌ Video not found. Please try a different name.");
-
-        const url = video.url;
-        const info = await ytdl.getInfo(url);
         
-        // Find a format with both video and audio, preferably 720p or lower
-        const format = info.formats.find(f => 
-            f.hasVideo && 
-            f.hasAudio && 
-            (f.qualityLabel.includes('720p') || f.qualityLabel.includes('480p') || f.qualityLabel.includes('360p'))
-        );
+        // FIX: ytdl.mp4() function ko direct istemal kiya gaya hai
+        const { stream, quality } = await ytdl.mp4(video.url);
 
-        if (!format) {
-            return reply("❌ Could not find a suitable video format to download (max 720p).");
-        }
-        
         const captionText = `🎬 *Now Downloading Your Video* 🎬\n\n` +
                             `*✨ Title:* ${video.title}\n` +
-                            `*🎞️ Quality:* ${format.qualityLabel}\n` +
+                            `*🎞️ Quality:* ${quality}\n` + // Quality direct library se li gayi hai
                             `*⏳ Duration:* ${formatDuration(video.seconds)}\n` +
                             `*👤 Author:* ${video.author.name}\n\n` +
                             `> *© ${config.BOT_NAME}*`;
@@ -121,11 +101,8 @@ async (conn, m, mek, { q, reply }) => {
             caption: captionText
         }, { quoted: mek });
 
-        // Download and send the video
-        const videoStream = await ytdl.download(url, { format: format.itag });
-        
         await conn.sendMessage(m.from, {
-            video: videoStream,
+            video: stream,
             mimetype: 'video/mp4',
             caption: `*${video.title}*`
         }, { quoted: mek });
