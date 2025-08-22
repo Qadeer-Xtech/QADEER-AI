@@ -1,25 +1,17 @@
 const config = require('../config');
 const { cmd } = require('../command');
-const ytdl = require('@dark-yasiya/yt-dl.js'); // Hum isi library ko istemal karenge
+const ytdl = require('ytdl-core'); // Nayi library istemal kar rahay hain
 const yts = require("yt-search");
-const fs = require('fs');
 
 // Function to format seconds into HH:MM:SS
 function formatDuration(seconds) {
-    if (isNaN(seconds) || seconds < 0) {
-        return "00:00";
-    }
+    if (isNaN(seconds) || seconds < 0) return "00:00";
     const hours = Math.floor(seconds / 3600);
     const minutes = Math.floor((seconds % 3600) / 60);
     const secs = Math.floor(seconds % 60);
-    
-    if (hours > 0) {
-        return `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
-    } else {
-        return `${String(minutes).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
-    }
+    if (hours > 0) return `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
+    return `${String(minutes).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
 }
-
 
 //================================================================================
 // AUDIO DOWNLOADER COMMAND
@@ -36,13 +28,21 @@ async (conn, m, mek, { q, reply }) => {
     if (!q) return reply("Please provide a song name or a YouTube URL.");
 
     try {
-        const search = await yts(q);
-        const video = search.videos[0];
+        let video;
+        if (ytdl.validateURL(q)) {
+            const videoId = ytdl.getURLVideoID(q);
+            const search = await yts({ videoId });
+            video = search;
+        } else {
+            const search = await yts(q);
+            video = search.videos[0];
+        }
+
         if (!video) return reply("❌ Song not found. Please try a different name.");
 
         const captionText = `🎧 *Now Downloading Your Song* 🎧\n\n` +
                             `*✨ Title:* ${video.title}\n` +
-                            `*⏳ Duration:* ${formatDuration(video.seconds)}\n` +
+                            `*⏳ Duration:* ${video.timestamp}\n` +
                             `*👤 Author:* ${video.author.name}\n\n` +
                             `> *© ${config.BOT_NAME}*`;
 
@@ -51,13 +51,17 @@ async (conn, m, mek, { q, reply }) => {
             caption: captionText
         }, { quoted: mek });
         
-        // FIX: ytdl.mp3() function ko direct istemal kiya gaya hai
-        const { stream } = await ytdl.mp3(video.url);
+        // ytdl-core se audio stream hasil kar rahay hain
+        const audioStream = ytdl(video.url, {
+            filter: 'audioonly',
+            quality: 'highestaudio'
+        });
         
         await conn.sendMessage(m.from, {
-             audio: stream,
+             audio: audioStream,
              mimetype: 'audio/mpeg',
-             fileName: `${video.title}.mp3`
+             fileName: `${video.title}.mp3`,
+             ptt: false
         }, { quoted: mek });
 
     } catch (e) {
@@ -65,7 +69,6 @@ async (conn, m, mek, { q, reply }) => {
         reply(`An error occurred: ${e.message}`);
     }
 });
-
 
 //================================================================================
 // VIDEO DOWNLOADER COMMAND
@@ -82,17 +85,21 @@ async (conn, m, mek, { q, reply }) => {
     if (!q) return reply("Please provide a video name or a YouTube URL.");
 
     try {
-        const search = await yts(q);
-        const video = search.videos[0];
+        let video;
+        if (ytdl.validateURL(q)) {
+            const videoId = ytdl.getURLVideoID(q);
+            const search = await yts({ videoId });
+            video = search;
+        } else {
+            const search = await yts(q);
+            video = search.videos[0];
+        }
+
         if (!video) return reply("❌ Video not found. Please try a different name.");
-        
-        // FIX: ytdl.mp4() function ko direct istemal kiya gaya hai
-        const { stream, quality } = await ytdl.mp4(video.url);
 
         const captionText = `🎬 *Now Downloading Your Video* 🎬\n\n` +
                             `*✨ Title:* ${video.title}\n` +
-                            `*🎞️ Quality:* ${quality}\n` + // Quality direct library se li gayi hai
-                            `*⏳ Duration:* ${formatDuration(video.seconds)}\n` +
+                            `*⏳ Duration:* ${video.timestamp}\n` +
                             `*👤 Author:* ${video.author.name}\n\n` +
                             `> *© ${config.BOT_NAME}*`;
                             
@@ -101,8 +108,14 @@ async (conn, m, mek, { q, reply }) => {
             caption: captionText
         }, { quoted: mek });
 
+        // ytdl-core se video stream hasil kar rahay hain
+        const videoStream = ytdl(video.url, {
+            filter: 'audioandvideo',
+            quality: 'highestvideo'
+        });
+        
         await conn.sendMessage(m.from, {
-            video: stream,
+            video: videoStream,
             mimetype: 'video/mp4',
             caption: `*${video.title}*`
         }, { quoted: mek });
