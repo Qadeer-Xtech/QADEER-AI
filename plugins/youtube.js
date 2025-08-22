@@ -1,7 +1,8 @@
 const config = require('../config');
 const { cmd } = require('../command');
-const ytdl = require('ytdl-core'); // Nayi library istemal kar rahay hain
+const ytdl = require('ytdl-core');
 const yts = require("yt-search");
+const { WAMediaUpload, WAProto } = require("@whiskeysockets/baileys"); // Yeh line add karna zaroori hai
 
 // Function to format seconds into HH:MM:SS
 function formatDuration(seconds) {
@@ -28,6 +29,7 @@ async (conn, m, mek, { q, reply }) => {
     if (!q) return reply("Please provide a song name or a YouTube URL.");
 
     try {
+        await conn.sendMessage(m.from, { react: { text: "📥", key: m.key } });
         let video;
         if (ytdl.validateURL(q)) {
             const videoId = ytdl.getURLVideoID(q);
@@ -51,18 +53,20 @@ async (conn, m, mek, { q, reply }) => {
             caption: captionText
         }, { quoted: mek });
         
-        // ytdl-core se audio stream hasil kar rahay hain
         const audioStream = ytdl(video.url, {
             filter: 'audioonly',
             quality: 'highestaudio'
         });
         
+        // FIX: Naye Baileys ke version ke mutabiq code
         await conn.sendMessage(m.from, {
              audio: audioStream,
              mimetype: 'audio/mpeg',
              fileName: `${video.title}.mp3`,
              ptt: false
         }, { quoted: mek });
+
+        await conn.sendMessage(m.from, { react: { text: "✅", key: m.key } });
 
     } catch (e) {
         console.error("Error in new-song command:", e);
@@ -85,6 +89,7 @@ async (conn, m, mek, { q, reply }) => {
     if (!q) return reply("Please provide a video name or a YouTube URL.");
 
     try {
+        await conn.sendMessage(m.from, { react: { text: "📥", key: m.key } });
         let video;
         if (ytdl.validateURL(q)) {
             const videoId = ytdl.getURLVideoID(q);
@@ -108,17 +113,19 @@ async (conn, m, mek, { q, reply }) => {
             caption: captionText
         }, { quoted: mek });
 
-        // ytdl-core se video stream hasil kar rahay hain
         const videoStream = ytdl(video.url, {
             filter: 'audioandvideo',
             quality: 'highestvideo'
         });
         
+        // FIX: Naye Baileys ke version ke mutabiq code
         await conn.sendMessage(m.from, {
             video: videoStream,
             mimetype: 'video/mp4',
             caption: `*${video.title}*`
         }, { quoted: mek });
+
+        await conn.sendMessage(m.from, { react: { text: "✅", key: m.key } });
 
     } catch (e) {
         console.error("Error in new-mp4 command:", e);
