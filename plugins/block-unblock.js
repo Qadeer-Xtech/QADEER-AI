@@ -16,6 +16,9 @@ async (conn, m, { reply, q, react }) => {
         return reply("Only the bot owner can use this command.");
     }
 
+    // Manually get the text argument to ensure it always works
+    const textArgument = m.text.split(' ').slice(1).join(' ').trim();
+
     let jid;
     if (m.quoted) {
         // Block by replying to a message
@@ -23,9 +26,9 @@ async (conn, m, { reply, q, react }) => {
     } else if (m.mentionedJid && m.mentionedJid.length > 0) {
         // Block by mentioning a user
         jid = m.mentionedJid[0];
-    } else if (q) {
+    } else if (textArgument) {
         // Block by providing the number directly
-        const number = q.replace(/[^0-9]/g, ''); // Remove any non-digit characters
+        const number = textArgument.replace(/[^0-9]/g, ''); // Remove any non-digit characters
         if (!number) {
             await react("❌");
             return reply("Please provide a valid number.");
@@ -64,6 +67,9 @@ async (conn, m, { reply, q, react }) => {
         return reply("Only the bot owner can use this command.");
     }
 
+    // Manually get the text argument to ensure it always works
+    const textArgument = m.text.split(' ').slice(1).join(' ').trim();
+
     let jid;
     if (m.quoted) {
         // Unblock by replying to a message
@@ -71,9 +77,9 @@ async (conn, m, { reply, q, react }) => {
     } else if (m.mentionedJid && m.mentionedJid.length > 0) {
         // Unblock by mentioning a user
         jid = m.mentionedJid[0];
-    } else if (q) {
+    } else if (textArgument) {
         // Unblock by providing the number directly
-        const number = q.replace(/[^0-9]/g, ''); // Remove any non-digit characters
+        const number = textArgument.replace(/[^0-9]/g, ''); // Remove any non-digit characters
         if (!number) {
             await react("❌");
             return reply("Please provide a valid number.");
