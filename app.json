@@ -37,19 +37,13 @@
       "required": false,
       "value": "true"  
     },
-    
-     "FAKE_CHAT_ENABLED": {
-      "description": "Make it true to enable fake chat feature globally on bot start.",
-      "required": false,
-      "value": "false"
-    },    
-    
-     "ANTI_CALL": {
-      "description": "Make it true to enable Anti-Call feature.",
+        
+     "ANTI_BUG": {
+      "description": "Make it true to enable Anti-Bug feature.",
       "required": false,
       "value": "true"  
-    },    
-    
+    },
+              
     "ALWAYS_ONLINE": {
       "description": "Make it true if want always online.",
       "required": false,

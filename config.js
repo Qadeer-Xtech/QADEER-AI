@@ -30,10 +30,8 @@ ANTI_DELETE: process.env.ANTI_DELETE || "true",
 // set true false for anti delete     
 ANTI_DEL_PATH: process.env.ANTI_DEL_PATH || "inbox", 
 // change it to 'same' if you want to resend deleted message in same chat  
-ANTI_CALL: process.env.ANTI_CALL || "true",
-// Set true/false to enable/disable the anti-call feature
-FAKE_CHAT_ENABLED: process.env.FAKE_CHAT_ENABLED || "false",
-// true karne se bot start hoty hi fake chat feature on kr dega.
+ANTI_BUG: process.env.ANTI_BUG || "true",
+// set true false for anti bug system
 MENTION_REPLY: process.env.MENTION_REPLY || "false",
 // make true if want auto voice reply if someone menetion you 
 MENU_IMAGE_URL: process.env.MENU_IMAGE_URL || "https://qu.ax/Pusls.jpg",
