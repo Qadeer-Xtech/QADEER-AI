@@ -37,12 +37,6 @@
       "required": false,
       "value": "true"  
     },
-        
-     "ANTI_BUG": {
-      "description": "Make it true to enable Anti-Bug feature.",
-      "required": false,
-      "value": "true"  
-    },
               
     "ALWAYS_ONLINE": {
       "description": "Make it true if want always online.",

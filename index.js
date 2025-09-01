@@ -72,10 +72,6 @@ const os = require('os');
 const Crypto = require('crypto');
 const path = require('path');
 
-// +++ ANTIBUG IMPORT START +++
-const { handleAntiBug } = require('./lib/antibug-handler'); 
-// +++ ANTIBUG IMPORT END +++
-
 // Configuration constants
 const prefix = config.PREFIX;
 const ownerNumber = ['923151105391'];
@@ -171,12 +167,6 @@ async function connectToWA() {
         const m = messages.messages[0];
         if (!m.message) return;
 
-        // +++ ANTIBUG HANDLER INTEGRATION START +++
-        const isBugHandled = await handleAntiBug(sock, m);
-        if (isBugHandled) {
-            return; // Agar message bug tha aur handle ho gaya to baaki code execute na ho
-        }
-        // +++ ANTIBUG HANDLER INTEGRATION END +++
 
         m.message = getContentType(m.message) === 'ephemeralMessage' ? m.message.ephemeralMessage.message : m.message;
         
