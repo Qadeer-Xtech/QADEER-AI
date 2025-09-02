@@ -1,3 +1,13 @@
+## 🚧 Maintenance Notice
+
+This bot is currently under update/maintenance.  
+Please do not deploy it for now.  
+You will be notified once the final update is released.
+
+
+______
+
+
 [![QADEER KHAN](https://raw.githubusercontent.com/Qadeer-Xtech/QADEER-AI/main/Qadeer/tofan.svg)](https://whatsapp.com/channel/0029Vaw6yRaBPzjZPtVtA80A)
 ___
 
