@@ -167,35 +167,59 @@ async function fetchAndSaveSessionFromGist(gistId) {
 }
 
 /**
- * Downloads the session data based on the SESSION_ID from config.
- * @returns {Promise<boolean>} Status of the download.
+ * Decodes session from Base64 or downloads it from a Gist.
+ * @returns {Promise<boolean>} Status of the session creation.
  */
 async function downloadSessionData() {
     const sessionsDir = path.join(__dirname, 'sessions');
     const credsFile = path.join(sessionsDir, 'creds.json');
 
     if (!config.SESSION_ID) {
-        console.error('❌ Please add your session to SESSION_ID env !!');
+        console.error('❌ Please add your SESSION_ID to the environment variables!');
         return false;
     }
 
     if (fs.existsSync(credsFile)) {
-        console.log('✅ Session file already exists.');
+        console.log('✅ Session file already exists. Skipping creation.');
         return true;
     }
 
+    // Ensure the sessions directory exists
+    if (!fs.existsSync(sessionsDir)) {
+        fs.mkdirSync(sessionsDir, { recursive: true });
+    }
+
     try {
-        let gistId = config.SESSION_ID.split('Qadeer~')[1] || config.SESSION_ID;
-        const success = await fetchAndSaveSessionFromGist(gistId);
-        if (success) {
-            console.log('✅ Session downloaded');
-        }
-        return success;
+        // --- NEW LOGIC: TRY BASE64 DECODING FIRST ---
+        console.log('Attempting to decode SESSION_ID as Base64...');
+        const decodedSession = Buffer.from(config.SESSION_ID, 'base64').toString('utf-8');
+        
+        // Validate if the decoded string is valid JSON
+        JSON.parse(decodedSession);
+
+        // If decoding and validation are successful, write the session file
+        await fs.promises.writeFile(credsFile, decodedSession);
+        console.log('✅ Session successfully created from Base64 string.');
+        return true;
+
     } catch (error) {
-        console.error('❌ Failed to download session data:');
-        return false;
+        // --- FALLBACK LOGIC: IF BASE64 FAILS, USE GIST METHOD ---
+        console.log('⚠️ Base64 decoding failed. It might be a Gist ID. Falling back to Gist method.');
+        
+        try {
+            let gistId = config.SESSION_ID.split('Qadeer~')[1] || config.SESSION_ID;
+            const success = await fetchAndSaveSessionFromGist(gistId);
+            if (success) {
+                console.log('✅ Session downloaded successfully from Gist.');
+            }
+            return success;
+        } catch (gistError) {
+            console.error('❌ Failed to download session data using Gist ID method:', gistError.message);
+            return false;
+        }
     }
 }
+
 
 //================================================================================
 // SECTION: Main Connection Logic
@@ -1112,4 +1136,3 @@ app.listen(port, () => console.log(`Server listening on port http://localhost:${
         connectToWA();
     }, 4000);
 })();
-
