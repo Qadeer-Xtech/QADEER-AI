@@ -10,7 +10,7 @@ cmd({
   alias: ["imgtourl", "imgurl", "url", "geturl", "upload"],
   react: '🖇',
   desc: "Convert media to Catbox URL",
-  category: "utility",
+  category: "tools",
   use: ".tourl [reply to media]",
   filename: __filename
 }, async (client, message, args, { reply }) => {

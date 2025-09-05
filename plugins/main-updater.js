@@ -48,7 +48,7 @@ cmd({
     alias: ['sync', 'upgrade'],
     react: '🆕',
     desc: 'Update the bot to the latest version.',
-    category: 'misc',
+    category: 'owner',
     filename: __filename,
 }, async (conn, mek, m, { reply, isOwner }) => {
 
