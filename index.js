@@ -65,7 +65,7 @@ const util = require('util');
 const { sms, downloadMediaMessage, AntiDelete } = require('./lib');
 const FileType = require('file-type');
 const axios = require('axios');
-const { File } = require('megajs');
+// const { File } = require('megajs'); // Mega.js is no longer needed
 const { fromBuffer } = require('file-type');
 const bodyparser = require('body-parser');
 const os = require('os');
@@ -93,19 +93,37 @@ const clearTempDir = () => {
 };
 setInterval(clearTempDir, 5 * 60 * 1000);
 
-if (!fs.existsSync(__dirname + '/sessions/creds.json')) {
+// --- START: New Base64 Session Logic ---
+const sessionsDir = path.join(__dirname, 'sessions');
+const credsFile = path.join(sessionsDir, 'creds.json');
+
+if (!fs.existsSync(credsFile)) {
     if (!config.SESSION_ID) {
-        return console.log('Please add your session to SESSION_ID env !!');
+        console.error('❌ Please add your session to the SESSION_ID environment variable!');
+        process.exit(1);
     }
-    const sessdata = config.SESSION_ID.replace('Qadeer~', '');
-    const filer = File.fromURL('https://mega.nz/file/' + sessdata);
-    filer.download((err, data) => {
-        if (err) throw err;
-        fs.writeFile(__dirname + '/sessions/creds.json', data, () => {
-            console.log('Session downloaded ✅');
-        });
-    });
+
+    console.log('Attempting to create session from Base64 string...');
+
+    try {
+        if (!fs.existsSync(sessionsDir)) {
+            fs.mkdirSync(sessionsDir, { recursive: true });
+        }
+
+        const decodedSession = Buffer.from(config.SESSION_ID, 'base64').toString('utf-8');
+        fs.writeFileSync(credsFile, decodedSession);
+        console.log('✅ Session successfully created from Base64 string.');
+
+    } catch (error) {
+        console.error('❌ Failed to decode or save session from Base64 string:', error);
+        console.error('Please ensure your SESSION_ID is a valid Base64 string.');
+        process.exit(1);
+    }
+} else {
+     console.log('✅ Session file already exists. Skipping creation.');
 }
+// --- END: New Base64 Session Logic ---
+
 
 const express = require('express');
 const app = express();
@@ -569,6 +587,4 @@ app.get('/', (req, res) => {
 
 app.listen(port, () => console.log(`Server listening on port http://localhost:${port}`));
 
-setTimeout(() => {
-    connectToWA();
-}, 2500);
+connectToWA();
