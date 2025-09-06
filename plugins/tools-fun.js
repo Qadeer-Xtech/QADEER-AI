@@ -41,61 +41,48 @@ async (conn, mek, m, { from, reply }) => {
     }
 });
 
-// char
+
+// char (Modified Command)
 
 cmd({
     pattern: "character",
     alias: ["char"],
-    desc: "Check the character of a mentioned user.",
+    desc: "Check the character of a user.",
     react: "🔥",
     category: "fun",
     filename: __filename,
 }, 
 async (conn, mek, m, { from, isGroup, text, reply }) => {
     try {
-        // Ensure the command is used in a group
-        if (!isGroup) {
-            return reply("This command can only be used in groups.");
-        }
-
-        // Extract the mentioned user
-        const mentionedUser = m.message.extendedTextMessage?.contextInfo?.mentionedJid?.[0];
-        if (!mentionedUser) {
-            return reply("Please mention a user whose character you want to check.");
-        }
-
-        // Define character traits
         const userChar = [
-            "Sigma",
-            "Generous",
-            "Grumpy",
-            "Overconfident",
-            "Obedient",
-            "Good",
-            "Simp",
-            "Kind",
-            "Patient",
-            "Pervert",
-            "Cool",
-            "Helpful",
-            "Brilliant",
-            "Sexy",
-            "Hot",
-            "Gorgeous",
-            "Cute",
+            "Sigma", "Generous", "Grumpy", "Overconfident",
+            "Obedient", "Good", "Simp", "Kind", "Patient",
+            "Pervert", "Cool", "Helpful", "Brilliant",
+            "fine", "best", "Gorgeous", "Cute",
         ];
 
-        // Randomly select a character trait
-        const userCharacterSelection =
-            userChar[Math.floor(Math.random() * userChar.length)];
+        const userCharacterSelection = userChar[Math.floor(Math.random() * userChar.length)];
+        let message;
+        let mentions;
 
-        // Message to send
-        const message = `Character of @${mentionedUser.split("@")[0]} is *${userCharacterSelection}* 🔥⚡`;
+        if (isGroup) {
+            // Group logic: requires a mention
+            const mentionedUser = m.message.extendedTextMessage?.contextInfo?.mentionedJid?.[0];
+            if (!mentionedUser) {
+                return reply("In a group, please mention a user to check their character.");
+            }
+            message = `Character of @${mentionedUser.split("@")[0]} is *${userCharacterSelection}* 🔥⚡`;
+            mentions = [mentionedUser];
+        } else {
+            // DM logic: targets the user directly
+            message = `Your character is *${userCharacterSelection}* 🔥⚡`;
+            mentions = [from];
+        }
 
         // Send the message with mentions
         await conn.sendMessage(from, {
             text: message,
-            mentions: [mentionedUser],
+            mentions: mentions,
         }, { quoted: m });
 
     } catch (e) {
@@ -104,6 +91,7 @@ async (conn, mek, m, { from, isGroup, text, reply }) => {
     }
 });
 
+// repeat
 cmd({
   pattern: "repeat",
   alias: ["rp", "rpm"],

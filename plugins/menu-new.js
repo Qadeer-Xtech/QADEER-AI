@@ -28,16 +28,16 @@ cmd({
 ⚠️ *Some commands might not be in this menu so use ${config.PREFIX}allmenu or ${config.PREFIX}menu2 command*
 
 ╭─ ✨ 𝗖𝗔𝗧𝗘𝗚𝗢𝗥𝗜𝗘𝗦 ─╮
-│ 1️⃣  ⬇️  *Download Tools*
+│ 1️⃣  ⬇️  *Download Menu*
 │ 2️⃣  💬  *Group Commands*
-│ 3️⃣  🎉  *Fun Commands*
-│ 4️⃣  👑  *Owner Commands*
+│ 3️⃣  🎉  *Fun Menu*
+│ 4️⃣  🛠️  *Owner Menu*
 │ 5️⃣  🧠  *AI Menu*
 │ 6️⃣  🌸  *Anime Tools*
 │ 7️⃣  🔧  *Convert Menu*
 │ 8️⃣  🧰  *Utilities*
 │ 9️⃣  🏠  *Main Menu*
-│ 🔟  ⚙️  *Setting*
+│ 🔟  ⚙️  *Settings*
 │ 1️⃣1️⃣  🎨  *Logo Maker*
 ╰───────────╯
 
@@ -98,7 +98,7 @@ cmd({
         const menuOptions = {
             '1': {
                 title: '📥 *Download Menu* 📥',
-                content: `╭━━━〔 *Download Menu* 〕 \n┃★│ • pindl [url]\n┃★│ • ig [url]\n┃★│ • tiktok [url]\n┃★│ • video2 [url]\n┃★│ • song\n┃★│ • gitclone [url]\n┃★│ • play3 [name]\n┃╰──────────────\n╰━━━━━━━━━━━━━━━┈⊷\n> *© 𝙿𝙾𝚆𝙴𝚁𝙴𝙳 𝙱𝚈 𝚀𝙰𝙳𝙴𝙴𝚁 𝙰𝙸 🤖* `,
+                content: `╭━━━〔 *Download Menu* 〕 \n┃★│ • pindl [url]\n┃★│ • ig [url]\n┃★│ • tiktok [url]\n┃★│ • video2 [url]\n┃★│ • ringtone\n┃★│ • song\n┃★│ • gitclone [url]\n┃★│ • play3 [name]\n┃╰──────────────\n╰━━━━━━━━━━━━━━━┈⊷\n> *© 𝙿𝙾𝚆𝙴𝚁𝙴𝙳 𝙱𝚈 𝚀𝙰𝙳𝙴𝙴𝚁 𝙰𝙸 🤖* `,
                 image: true
             },
             '2': {
@@ -113,12 +113,12 @@ cmd({
             },
             '4': {
                 title: '👑 *Owner Menu* 👑',
-                content: `╭━━━〔 *Owner Menu* 〕\n┃★│ • block\n┃★│ • pair\n┃★│ • unblock\n┃★│ • vv\n┃★│ • vv2\n┃★│ • restart\n┃★│ • get\n┃★│ • gjid\n┃★│ • deletereport\n┃★│ • shutdown\n┃★│ • setpassword\n┃★│ • viewpassword\n┃★╰──────────────\n╰━━━━━━━━━━━━━━━┈⊷\n> *© 𝙿𝙾𝚆𝙴𝚁𝙴𝙳 𝙱𝚈 𝚀𝙰𝙳𝙴𝙴𝚁 𝙰𝙸 🤖* `,
+                content: `╭━━━〔 *Owner Menu* 〕\n┃★│ • block\n┃★│ • unblock\n┃★│ • vv\n┃★│ • vv2\n┃★│ • restart\n┃★│ • get\n┃★│ • gjid\n┃★│ • deletereport\n┃★│ • shutdown\n┃★│ • setpassword\n┃★│ • viewpassword\n┃★╰──────────────\n╰━━━━━━━━━━━━━━━┈⊷\n> *© 𝙿𝙾𝚆𝙴𝚁𝙴𝙳 𝙱𝚈 𝚀𝙰𝙳𝙴𝙴𝚁 𝙰𝙸 🤖* `,
                 image: true
             },
             '5': {
                 title: '🤖 *AI Menu* 🤖',
-                content: `╭━━━〔 *AI Menu* 〕\n┃★│ • ai\n┃★│ • fluxai\n┃★│ • stabilityai\n┃★│ • stablediffusion\n┃★╰──────────────\n╰━━━━━━━━━━━━━━━┈⊷\n> *© 𝙿𝙾𝚆𝙴𝚁𝙴𝙳 𝙱𝚈 𝚀𝙰𝙳𝙴𝙴𝚁 𝙰𝙸 🤖* `,
+                content: `╭━━━〔 *AI Menu* 〕\n┃★│ • veo3\n┃★│ • txt2vidfast\n┃★│ • ai\n┃★│ • fluxai\n┃★│ • stabilityai\n┃★│ • stablediffusion\n┃★╰──────────────\n╰━━━━━━━━━━━━━━━┈⊷\n> *© 𝙿𝙾𝚆𝙴𝚁𝙴𝙳 𝙱𝚈 𝚀𝙰𝙳𝙴𝙴𝚁 𝙰𝙸 🤖* `,
                 image: true
             },
             '6': {
@@ -138,7 +138,7 @@ cmd({
             },
             '09': {
                 title: '🏠 *Main Menu* 🏠',
-                content: `╭━━━〔 *Main Menu* 〕\n┃★│ • alive\n┃★│ • alive2\n┃★│ • ping\n┃★│ • uptime\n┃★│ • setalive\n┃★╰──────────────\n╰━━━━━━━━━━━━━━━┈⊷\n> *© 𝙿𝙾𝚆𝙴𝚁𝙴𝙳 𝙱𝚈 𝚀𝙰𝙳𝙴𝙴𝚁 𝙰𝙸 🤖* `,
+                content: `╭━━━〔 *Main Menu* 〕\n┃★│ • alive\n┃★│ • alive2\n┃★│ • ping\n┃★│ • uptime\n┃★│ • setalive\n┃★│ • menu\n┃★│ • menu2\n┃★╰──────────────\n╰━━━━━━━━━━━━━━━┈⊷\n> *© 𝙿𝙾𝚆𝙴𝚁𝙴𝙳 𝙱𝚈 𝚀𝙰𝙳𝙴𝙴𝚁 𝙰𝙸 🤖* `,
                 image: true
             },
             '10': {
