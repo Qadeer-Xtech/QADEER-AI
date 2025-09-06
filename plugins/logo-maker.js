@@ -709,15 +709,15 @@ cmd({
 });
 
 cmd({
-    pattern: "nigeria",
-    desc: "Create a Nigeria text effect",
+    pattern: "khan",
+    desc: "Create a khan text effect",
     category: "logo",
     react: "🎨",
     filename: __filename
 }, async (conn, mek, m, { from, args, reply }) => {
     try {
         if (!args.length) {
-            return reply("❌ Please provide a name. Example: nigeria Qadeer");
+            return reply("❌ Please provide a name. Example: khan Qadeer");
         }
         
         const name = args.join(" ");

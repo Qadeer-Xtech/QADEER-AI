@@ -1,0 +1,47 @@
+// get-pair.js
+const { cmd } = require('../command');
+const fetch = require('node-fetch');
+const { getBuffer, getGroupAdmins, getRandom, h2k, isUrl, Json, sleep, fetchJson } = require('../lib/functions');
+
+cmd({
+    pattern: 'pair',
+    alias: ['getpair', 'clonebot'],
+    desc: 'Pairing code',
+    category: 'download',
+    use: '<phone_number>',
+    filename: __filename
+}, async (sock, message, { from, prefix, quoted, q, reply }) => {
+
+    await sock.sendMessage(from, { react: { text: '✅', key: message.key } });
+
+    try {
+        if (!q) {
+            return await reply('*Example -* .pair 923XX');
+        }
+        
+        const phoneNumber = q.replace(/\D/g, '');
+        
+        if (phoneNumber.startsWith('0')) {
+            return await reply('❗Please use your country code (e.g., 92) instead of starting with 0.');
+        }
+
+        const formattedPhone = '+' + phoneNumber;
+        const response = await fetch(`https://base64-lite-55aa246d37d8.herokuapp.com/pair?phone=${formattedPhone}`);
+        const data = await response.json();
+
+        if (!data || !data.code) {
+            return await reply('❌ Failed to retrieve pairing code. Please check the phone number and try again.');
+        }
+
+        const pairingCode = data.code;
+        const replyText = '> *QADEER-AI PAIR COMPLETED*';
+
+        await reply(replyText + '\n\n*Your pairing code is:* ' + pairingCode);
+        await new Promise(resolve => setTimeout(resolve, 2000));
+        await reply('' + pairingCode);
+
+    } catch (error) {
+        console.error(error);
+        await reply('⚠️ An error occurred. Please try again later.');
+    }
+});
