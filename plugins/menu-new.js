@@ -31,7 +31,7 @@ cmd({
 │ 1️⃣  ⬇️  *Download Tools*
 │ 2️⃣  💬  *Group Commands*
 │ 3️⃣  🎉  *Fun Commands*
-│ 4️⃣  🛠️  *Owner Commands*
+│ 4️⃣  👑  *Owner Commands*
 │ 5️⃣  🧠  *AI Menu*
 │ 6️⃣  🌸  *Anime Tools*
 │ 7️⃣  🔧  *Convert Menu*
