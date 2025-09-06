@@ -14,9 +14,9 @@ function toSmallCaps(str) {
 }
 
 cmd({
-  pattern: "menu",
+  pattern: "menu2",
   alias: ["❄️", "mega", "allmenu"],
-  use: '.menu',
+  use: '.menu2',
   desc: "Show all bot commands",
   category: "main",
   react: "❄️",
