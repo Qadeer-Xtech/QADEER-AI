@@ -36,3 +36,15 @@ Empowering developers with powerful WhatsApp automation tools
 If this project helped you, consider starring the repository! ⭐
 
 </div>
+
+___
+
+
+testing.....
+
+
+
+<p align="center">
+  <a href="https://dashboard.heroku.com/new?template=https://github.com/Qadeer-Xtech/QADEER-AI">
+    <img src="https://img.shields.io/badge/Deploy%20To%20Heroku-7952B3?style=for-the-badge&logo=heroku&logoColor=white" alt="Deploy to Heroku"/>
+  </a>
