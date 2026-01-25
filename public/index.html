@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>QADEER AI</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;600&display=swap" rel="stylesheet">
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            height: 100vh;
+            width: 100vw;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            font-family: 'Poppins', sans-serif;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            color: white;
+        }
+
+        .top-bar {
+            height: 50px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 25px;
+            font-size: 14px;
+            font-weight: 600;
+            z-index: 10;
+        }
+
+        .container {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            position: relative;
+        }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 30px;
+            padding: 40px 30px;
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        h1 { font-size: 28px; }
+        p { font-size: 14px; opacity: 0.8; }
+
+        .status-badge {
+            background: rgba(0,0,0,0.2);
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 12px;
+            margin: 0 auto;
+        }
+
+        .action-area {
+            margin-top: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            width: 100%;
+        }
+
+        .btn-full {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            background: white;
+            color: #764ba2;
+            text-decoration: none;
+            padding: 15px;
+            border-radius: 15px;
+            font-weight: bold;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: transform 0.2s;
+        }
+
+        .btn-full img {
+            width: 20px;
+            height: 20px;
+        }
+
+        .btn-full.secondary {
+            background: transparent;
+            color: white;
+            border: 2px solid white;
+        }
+
+        .btn-full:active { transform: scale(0.97); }
+
+        .circle {
+            position: absolute;
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.1);
+            z-index: -1;
+        }
+
+        .c1 { top: 10%; left: -50px; }
+        .c2 { bottom: 10%; right: -50px; background: rgba(0,0,0,0.1); }
+    </style>
+</head>
+<body>
+
+    <div class="top-bar">
+        <span id="time-display">--</span>
+        <div style="display:flex; gap:10px; align-items:center;">
+            <span>QADEER-AI</span>
+            <span id="battery-stat">⚡ 100%</span>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="circle c1"></div>
+        <div class="circle c2"></div>
+
+        <div class="glass-card">
+            <img src="https://cdn.jsdelivr.net/npm/simple-icons@v7/icons/whatsapp.svg"
+                 width="60" style="filter: invert(1); margin: 0 auto;">
+
+            <h1>Activated</h1>
+            <p>Welcome to the QADEER-AI interface. Your session is now secure.</p>
+            <div class="status-badge" id="date-badge">---</div>
+
+            <div class="action-area">
+                <a href="https://wa.me/923151105391" class="btn-full">
+                    <img src="https://cdn.jsdelivr.net/npm/simple-icons@v7/icons/whatsapp.svg">
+                    Contact Owner
+                </a>
+
+                <a href="https://github.com/Qadeer-Xtech/QADEER-AI" class="btn-full secondary">
+                    View GitHub
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function updateDateTime() {
+            const now = new Date();
+
+            const days = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
+            const months = ["January","February","March","April","May","June","July","August","September","October","November","December"];
+
+            let h = now.getHours();
+            let m = now.getMinutes();
+            let ap = h >= 12 ? 'PM' : 'AM';
+            h = h % 12 || 12;
+            m = m < 10 ? '0' + m : m;
+
+            const date = now.getDate();
+            const dayName = days[now.getDay()];
+            const monthName = months[now.getMonth()];
+
+            document.getElementById("time-display").innerText =
+                `${h}:${m} ${ap} • ${date} ${monthName}`;
+
+            document.getElementById("date-badge").innerText =
+                `${monthName} • ${dayName}`;
+        }
+
+        setInterval(updateDateTime, 1000);
+        updateDateTime();
+
+        if (navigator.getBattery) {
+            navigator.getBattery().then(b => {
+                document.getElementById('battery-stat').innerText =
+                    "⚡ " + Math.round(b.level * 100) + "%";
+            });
+        }
+    </script>
+
+</body>
+</html>
