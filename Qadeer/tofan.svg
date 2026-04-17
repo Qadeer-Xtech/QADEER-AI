@@ -1,0 +1,62 @@
+<svg width="100%" height="100%" viewBox="0 0 600 400" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="rainbow" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#ff0055">
+          <animate attributeName="stop-color" values="#ff0055;#ffcc00;#00ff99;#00ccff;#cc00ff;#ff0055" dur="7s" repeatCount="indefinite"/>
+      </stop>
+      <stop offset="100%" stop-color="#cc00ff">
+          <animate attributeName="stop-color" values="#cc00ff;#ff0055;#ffcc00;#00ff99;#00ccff;#cc00ff" dur="7s" repeatCount="indefinite"/>
+      </stop>
+    </linearGradient>
+    
+    <filter id="neonGlow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="4" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+
+  <rect width="100%" height="100%" fill="#080808"/>
+
+  <g fill="url(#rainbow)" opacity="0.7">
+    <circle r="1.5" cx="50"><animate attributeName="cy" from="-10" to="410" dur="4s" repeatCount="indefinite" begin="0s"/></circle>
+    <circle r="1" cx="150"><animate attributeName="cy" from="-10" to="410" dur="5s" repeatCount="indefinite" begin="-2s"/></circle>
+    <circle r="2" cx="250"><animate attributeName="cy" from="-10" to="410" dur="3s" repeatCount="indefinite" begin="-1s"/></circle>
+    <circle r="1.5" cx="350"><animate attributeName="cy" from="-10" to="410" dur="6s" repeatCount="indefinite" begin="-3s"/></circle>
+    <circle r="1" cx="450"><animate attributeName="cy" from="-10" to="410" dur="4.5s" repeatCount="indefinite" begin="-0.5s"/></circle>
+    <circle r="2" cx="550"><animate attributeName="cy" from="-10" to="410" dur="5.5s" repeatCount="indefinite" begin="-2.5s"/></circle>
+    <circle r="1" cx="100"><animate attributeName="cy" from="-20" to="420" dur="5.2s" repeatCount="indefinite" begin="-4s"/></circle>
+    <circle r="1.5" cx="200"><animate attributeName="cy" from="-20" to="420" dur="3.8s" repeatCount="indefinite" begin="-1.5s"/></circle>
+    <circle r="2" cx="300"><animate attributeName="cy" from="-20" to="420" dur="4.2s" repeatCount="indefinite" begin="-3.5s"/></circle>
+    <circle r="1" cx="400"><animate attributeName="cy" from="-20" to="420" dur="6.5s" repeatCount="indefinite" begin="-5s"/></circle>
+    <circle r="1.5" cx="500"><animate attributeName="cy" from="-20" to="420" dur="4.8s" repeatCount="indefinite" begin="0s"/></circle>
+  </g>
+
+  <g filter="url(#neonGlow)">
+    <rect x="10" y="10" width="580" height="380" rx="20" stroke="url(#rainbow)" stroke-width="4" fill="transparent">
+      <animate attributeName="stroke-dasharray" values="50,20;10,30;50,20" dur="4s" repeatCount="indefinite"/>
+    </rect>
+
+    <rect x="50" y="40" width="500" height="320" rx="20" fill="#1118" stroke="#fff2" stroke-width="1.5"/>
+
+    <text x="50%" y="100" text-anchor="middle" font-size="44" font-weight="bold" font-family="'Segoe UI', 'Arial', sans-serif" fill="url(#rainbow)">
+      💻 QADEER-AI 🤖
+      <animateTransform attributeName="transform" type="scale" values="1;1.05;1" dur="4s" repeatCount="indefinite"/>
+    </text>
+
+    <rect x="250" y="160" width="100" height="100" rx="10" fill="none" stroke="url(#rainbow)" stroke-width="3">
+       <animateTransform attributeName="transform" type="rotate" from="0 300 210" to="360 300 210" dur="15s" linear="linear" repeatCount="indefinite" />
+    </rect>
+    
+    <text x="300" y="220" text-anchor="middle" font-size="50" font-weight="bold" font-family="'Courier New', monospace" fill="url(#rainbow)">
+      AI
+      <animate attributeName="opacity" values="1;0.4;1" dur="3s" repeatCount="indefinite"/>
+    </text>
+
+    <text x="50%" y="360" text-anchor="middle" font-size="20" font-family="'Segoe UI', 'Verdana', sans-serif" fill="url(#rainbow)">
+      ✦ Created by Qadeer Khan ✦
+    </text>
+  </g>
+</svg>
