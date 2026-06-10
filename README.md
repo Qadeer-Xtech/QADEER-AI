@@ -20,7 +20,7 @@
 <br><br>
 
 <h4>PAIR BOT</h4>
-<a href="https://pair.qadeer-ai.xyz">
+<a href="https://iconic-pair-system.onrender.com">
   <img src="./System/btn_pair.svg" height="44"/>
 </a>
 
@@ -33,8 +33,8 @@
 
 <br><br>
 
-<h4>PANEL DASHBOARD</h4>
-<a href="https://panel.qadeer-ai.xyz">
+<h4>BOT HOSTING PANEL</h4>
+<a href="https://bot-hosting.net/?aff=1295967659707469845">
   <img src="./System/btn_panel.svg" height="44"/>
 </a>
 
