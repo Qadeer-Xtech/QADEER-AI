@@ -1,47 +1,84 @@
-## 𝐂𝐨𝐦𝐢𝐧𝐠 𝐒𝐨𝐨𝐧 
-
-___
-
-## 📊 Project Stats
-
 <div align="center">
 
-| Statistic | Badge |
-|-----------|-------|
-| **Profile Views** | <img src="https://komarev.com/ghpvc/?username=Qadeer-Xtech&label=Profile+Views&color=9D00FF&style=flat-square"> |
-| **Last Update** | <img src="https://img.shields.io/github/last-commit/Qadeer-Xtech/QADEER-AI?color=9D00FF&label=Last+Update&style=flat-square"> |
-| **Stars** | <img src="https://img.shields.io/github/stars/Qadeer-Xtech/QADEER-AI?color=9D00FF&label=Stars&style=flat-square"> |
-| **Forks** | <img src="https://img.shields.io/github/forks/Qadeer-Xtech/QADEER-AI?color=9D00FF&label=Forks&style=flat-square"> |
+<!-- TOP TYPING -->
+<img src="https://readme-typing-svg.demolab.com?font=Orbitron&size=30&duration=2200&pause=800&color=22D3EE&center=true&vCenter=true&width=900&height=75&lines=QADEER-AI;Advanced+WhatsApp+Bot;Multi-User+%7C+Stable+%7C+Fast" />
+
+<!-- HEADER -->
+<img src="https://capsule-render.vercel.app/api?type=waving&color=gradient&customColorList=1,7,19&height=190&section=header&text=QADEER-AI&fontSize=72&fontColor=ffffff&animation=fadeIn&fontAlignY=38" />
 
 </div>
 
-___
-
-<h2 align="center">🤝 Contributing</h2>
-
-Contributions are welcome! Please feel free to submit a Pull Request. For major changes, please open an issue first to discuss what you would like to change.
-
-1. Fork the repository
-2. Create your feature branch (git checkout -b feature/AmazingFeature)
-3. Commit your changes (git commit -m 'Add some AmazingFeature')
-4. Push to the branch (git push origin feature/AmazingFeature)
-5. Open a Pull Request
+---
 
 <div align="center">
 
-🌟 Crafted with ❤️ by 𝐐𝐚𝐝𝐞𝐞𝐫_𝐊𝐡𝐚𝐧.
+<h4>FORK REPOSITORY</h4>
+<a href="https://github.com/Qadeer-Xtech/QADEER-AI/fork">
+  <img src="./System/btn_fork.svg" height="44"/>
+</a>
 
-Empowering developers with powerful WhatsApp automation tools
+<br><br>
 
-If this project helped you, consider starring the repository! ⭐
+<h4>PAIR BOT</h4>
+<a href="https://pair.qadeer-ai.xyz">
+  <img src="./System/btn_pair.svg" height="44"/>
+</a>
+
+<br><br>
+
+<h4>DEPLOY TO HEROKU</h4>
+<a href="https://heroku.com/deploy?template=https://github.com/Qadeer-Xtech/QADEER-AI">
+  <img src="./System/btn_heroku.svg" height="44"/>
+</a>
+
+<br><br>
+
+<h4>PANEL DASHBOARD</h4>
+<a href="https://panel.qadeer-ai.xyz">
+  <img src="./System/btn_panel.svg" height="44"/>
+</a>
+
+<br><br>
+
+<h4>DOWNLOAD ZIP</h4>
+<a href="https://github.com/Qadeer-Xtech/QADEER-AI/archive/refs/heads/main.zip">
+  <img src="./System/btn_zip.svg" height="44"/>
+</a>
 
 </div>
 
-___
+---
 
+<p align="center"><img src="./System/divider_4.svg"/></p>
 
-testing.....
+## 👑 Author & Credits
 
+<div align="center">
 
+| Role | Name |
+|------|------|
+| 👨‍💻 Developer | **Qadeer Khan** |
+| 🤝 Support | Rao Abbas |
+| ⚙️ Base Library | Baileys (Modded) |
 
-### SOON
+</div>
+
+---
+
+## ⚠️ Disclaimer
+
+> This project is for **educational purposes only**.  
+> Any misuse is strictly prohibited.  
+> Developer is **not responsible** for improper usage.
+
+---
+
+<img src="https://capsule-render.vercel.app/api?type=waving&color=gradient&customColorList=1,7,19&height=120&section=footer&text=Made%20by%20Qadeer%20Khan&fontSize=24&fontColor=ffffff" />
+
+<div align="center">
+
+![Visitors](https://visitor-badge.laobi.icu/badge?page_id=Qadeer-Xtech.QADEER-AI&style=for-the-badge&color=0ea5e9)
+
+<b>⭐ Star zaroor dena agar project pasand aaye ⭐</b>
+
+</div>
