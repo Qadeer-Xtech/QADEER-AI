@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="165" height="44">
+  <defs>
+    <linearGradient id="g" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#0E7490"/>
+      <stop offset="100%" stop-color="#22D3EE"/>
+    </linearGradient>
+  </defs>
+  <rect width="165" height="44" rx="10" fill="url(#g)"/>
+  <rect x="1" y="1" width="163" height="42" rx="9" fill="none" stroke="#67E8F9" stroke-width="1" opacity="0.5"/>
+  <text x="82" y="28" font-family="'Segoe UI', Arial, sans-serif" font-size="14" font-weight="700" fill="white" text-anchor="middle">🔗  PAIR BOT</text>
+</svg>

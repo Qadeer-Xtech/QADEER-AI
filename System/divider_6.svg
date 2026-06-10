@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="28" viewBox="0 0 800 28">
+  <defs>
+    <linearGradient id="d6" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="transparent"/>
+      <stop offset="50%" stop-color="#7C3AED"/>
+      <stop offset="100%" stop-color="transparent"/>
+    </linearGradient>
+  </defs>
+  <line x1="0" y1="14" x2="320" y2="14" stroke="url(#d6)" stroke-width="1.5"/>
+  <!-- Star 1 -->
+  <polygon points="356,6 358.4,12.8 365.5,12.8 359.9,17 362.3,23.8 356,19.5 349.7,23.8 352.1,17 346.5,12.8 353.6,12.8" fill="#A855F7"/>
+  <!-- Star 2 -->
+  <polygon points="400,6 402.4,12.8 409.5,12.8 403.9,17 406.3,23.8 400,19.5 393.7,23.8 396.1,17 390.5,12.8 397.6,12.8" fill="#EC4899"/>
+  <!-- Star 3 -->
+  <polygon points="444,6 446.4,12.8 453.5,12.8 447.9,17 450.3,23.8 444,19.5 437.7,23.8 440.1,17 434.5,12.8 441.6,12.8" fill="#A855F7"/>
+  <line x1="480" y1="14" x2="800" y2="14" stroke="url(#d6)" stroke-width="1.5"/>
+</svg>

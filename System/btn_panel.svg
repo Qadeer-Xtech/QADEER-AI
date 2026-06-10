@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="185" height="44">
+  <defs>
+    <linearGradient id="g" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#9D174D"/>
+      <stop offset="100%" stop-color="#EC4899"/>
+    </linearGradient>
+  </defs>
+  <rect width="185" height="44" rx="10" fill="url(#g)"/>
+  <rect x="1" y="1" width="183" height="42" rx="9" fill="none" stroke="#F9A8D4" stroke-width="1" opacity="0.5"/>
+  <text x="92" y="28" font-family="'Segoe UI', Arial, sans-serif" font-size="14" font-weight="700" fill="white" text-anchor="middle">🖥️  FREE PANEL</text>
+</svg>

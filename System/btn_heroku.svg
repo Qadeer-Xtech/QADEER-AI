@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="210" height="44">
+  <defs>
+    <linearGradient id="g" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#2D0B6B"/>
+      <stop offset="100%" stop-color="#6762A6"/>
+    </linearGradient>
+  </defs>
+  <rect width="210" height="44" rx="10" fill="url(#g)"/>
+  <rect x="1" y="1" width="208" height="42" rx="9" fill="none" stroke="#9B8EC4" stroke-width="1" opacity="0.5"/>
+  <text x="105" y="28" font-family="'Segoe UI', Arial, sans-serif" font-size="14" font-weight="700" fill="white" text-anchor="middle">🚀  DEPLOY TO HEROKU</text>
+</svg>
