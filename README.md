@@ -19,3 +19,7 @@
 </a><br><br>
 
 </div>
+
+<p align="center">
+  <img src="System/qadeer.svg" alt="QADEER AI animated title" width="720" />
+</p>
